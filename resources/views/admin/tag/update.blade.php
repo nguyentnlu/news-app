@@ -1,4 +1,5 @@
 <x-app-layout>
+    @if(Gate::check('can_do', ['edit tag']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Tag') }}
@@ -48,4 +49,5 @@
             </div>
         </div>
     </div>
+    @endif
 </x-app-layout>

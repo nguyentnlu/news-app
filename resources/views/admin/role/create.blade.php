@@ -1,4 +1,5 @@
 <x-app-layout>
+    @if(Gate::check('can_do', ['create role']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Role') }}
@@ -46,4 +47,5 @@
             </div>
         </div>
     </div>
+    @endif
 </x-app-layout>

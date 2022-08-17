@@ -80,7 +80,6 @@ class CategoryController extends Controller
             'status' => 'required',
             'tag' => 'nullable|array'
         ]);
-
         $dataUpdate = $this->category->find($id);
         $dataUpdate->fill($data)->save();
 
