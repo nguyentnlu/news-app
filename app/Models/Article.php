@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
     use HasFactory;
+
+    const ENABLE_STATUS = true;
+    const DISABLE_STATUS = false;
 
     protected $fillable = [
         'title',
@@ -19,6 +23,16 @@ class Article extends Model
         'created_by',
     ];
 
+    public function getImageUrlAttribute()
+    {
+        $value = $this->attributes['url'];
+
+        if (preg_match('/^http(s)*\:\/\/[a-zA-Z0-9\-_\.]+\//i', $value)) {
+            return $value;
+        }
+
+        return Storage::url($value);
+    }
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');

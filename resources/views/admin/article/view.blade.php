@@ -41,18 +41,19 @@
                                 </thead>
                                 <tbody>
                                     @foreach($articles as $article)
+                                    @if(Gate::check('article_owner', $article))
                                     <tr>
                                         <td>{{$article -> id}}</td>
                                         <td>{{$article -> title}}</td>
                                         <td>
-                                            <img width="180px" src="{{ asset('images/'.$article->url) }}" />
+                                            <img width="180px" src="{{ asset('storage/'.$article->url) }}" />
                                         </td>
                                         <td>{{$article -> category -> name}}
                                         </td>
                                         <td>{{$article -> author -> name}}</td>
                                         <td>{{$article -> created_at}}</td>
                                         <td>{{$article -> updated_at}}</td>
-                                        @if(Gate::check('can_do', ['create article']))
+                                        @if(Gate::check('can_do', ['enable article']))
                                         <td>
                                             <!-- <label class="switch">
                                                 <input type="checkbox" checked>
@@ -71,14 +72,15 @@
                                             <form class="d-flex justify-content-end" action="{{ route('article.destroy', $article->id) }}" method="POST">
                                                 @method('DELETE')
                                                 {{csrf_field()}}
-                                                <a class="btn btn-info" style="display:inline" href="{{ route('article.show', $article->id)}}">Show</a> |
+                                                <a class="btn btn-info" style="display:inline" href="{{ route('article.show', $article->id)}}">Show</a>
                                                 @if(Gate::check('can_do', ['enable article']))
-                                                <button style="display:inline" onclick="return confirm('Are you sure you want to delete this article?')" class="btn btn-warning delete">Delete</button>
+                                                |<button style="display:inline" onclick="return confirm('Are you sure you want to delete this article?')" class="btn btn-warning delete">Delete</button>
                                                 @endif
                                             </form>
 
                                         </td>
                                     </tr>
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>

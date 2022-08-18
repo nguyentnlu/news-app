@@ -24,33 +24,28 @@
                             @method('PUT')
                             {{csrf_field()}}
                             <div class="mb-3">
-                                <label for="InputName" class="form-label">User name</label>
-                                <input readonly value="{{ $user->name}}" name="name" type="text" class="form-control" aria-describedby="emailHelp">
+                                <label for="name" class="form-label">User name</label>
+                                <input id="name" readonly value="{{ $user->name}}" name="name" type="text" class="form-control" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="InputName" class="form-label">User email</label>
-                                <input readonly value="{{ $user->email}}" name="email" type="text" class="form-control" aria-describedby="emailHelp">
+                                <label for="email" class="form-label">User email</label>
+                                <input id="email" readonly value="{{ $user->email}}" name="email" type="text" class="form-control" aria-describedby="emailHelp">
                             </div>
-                            <!-- <div class="mb-3">
-                        <label for="InputName" class="form-label">User password</label>
-                        <input value="{{ $user->email}}" name="password" type="password" class="form-control" aria-describedby="emailHelp">
-                    </div> -->
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Roles</label><br>
+                                <label class="form-label">Roles</label><br>
                                 @foreach($roles as $role)
                                 <input <?php
                                         foreach ($dataRoles as $dataRole) {
                                             if ($role->id == $dataRole->id)
                                                 echo "checked";
                                         }
-                                        ?> type="checkbox" id="vehicle1" name="role[]" value="{{$role->id}}">
-                                <label for="vehicle1">{{$role->name}}</label><br>
+                                        ?> type="checkbox" id="role" name="role[]" value="{{$role->id}}">
+                                <label for="role">{{$role->name}}</label><br>
                                 @endforeach
-                                <!-- <a href="{{ route('tag.create')}}">+ Add tag</a> -->
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">User Status</label>
-                                <select value="{{$user->status}}" name="status" id="cars" style="height: 35px">
+                                <label for="status" class="form-label">User Status</label>
+                                <select value="{{$user->status}}" name="status" id="status" style="height: 35px">
                                     <option <?php if ($user->status == 0) {
                                                 echo ("selected");
                                             } ?> value="0">disable</option>

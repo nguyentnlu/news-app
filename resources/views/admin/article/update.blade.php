@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(Gate::check('can_do', ['edit category']))
+    @if(Gate::check('article_owner', $article))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Article') }}
@@ -34,13 +34,11 @@
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Image</label>
-                                <img id="image" width="200px" src="{{ asset('images/'.$article->url) }}" />
+                                <img id="img-preview" width="300px" src="{{ asset('storage/'.$article->url) }}" />
                             </div>
                             <div class="mb-3">
                                 <label for="url" class="form-label">Change image</label>
-                                <input value="{{ old('url', $article->url) }}" onchange="changeImage()" accept="image/*" name="url" type="file" class="form-control" id="url">
-
-
+                                <input name="url" type="file" accept="image/*" class="form-control" id="url">
                             </div>
                             <div class="mb-3">
                                 <label for="category_id" class="form-label">Category</label>
@@ -78,22 +76,27 @@
     </div>
     <x-slot name="scripts">
         <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             ClassicEditor
-                .create(document.querySelector('#content'), {
-                    // height: '400px'
-                })
+                .create(document.querySelector('#content'), {})
                 .catch(error => {
                     console.error(error);
                 });
 
-            function changeImage() {
-                var x = document.getElementById("url").files[0].name;
-                document.getElementById("image").src = "http://localhost/images/" + x;
-            }
+
+            $('input[name="url"]').on('change', function() {
+                $('#img-preview').attr('src', '');
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    $('#img-preview').attr('src', reader.result);
+                };
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            })
         </script>
-
-
     </x-slot>
     @endif
 </x-app-layout>

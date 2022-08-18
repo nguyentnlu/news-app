@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(Gate::check('can_do', ['create article'])) article')
+    @if(Gate::check('can_do', ['create article']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Article') }}
@@ -31,7 +31,11 @@
                                 <input name="slug" type="text" class="form-control" id="slug" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="url" class="form-label">Url</label>
+                                <label for="img-preview" class="form-label">Image</label>
+                                <img id="img-preview" width="300px"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="url" class="form-label">Change image</label>
                                 <input accept="image/*" name="url" type="file" class="form-control" id="url" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
@@ -63,16 +67,34 @@
     </div>
     <x-slot name="scripts">
         <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             ClassicEditor
-                .create(document.querySelector('#content'), {
-                    height: '400px'
-                })
+                .create(document.querySelector('#content'), {})
                 .catch(error => {
                     console.error(error);
                 });
-        </script>
 
+
+            $('input[name="url"]').on('change', function() {
+                $('#img-preview').attr('src', '');
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    $('#img-preview').attr('src', reader.result);
+                };
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            })
+
+            // function changeImage() {
+            //     var x = document.getElementById("url").files[0].name;
+            //     document.getElementById("image").src = "http://localhost/images/" + x;
+            // }
+        </script>
     </x-slot>
     @endif
 </x-app-layout>

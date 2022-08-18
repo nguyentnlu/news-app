@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('slug');
             $table->text('url');
             $table->integer('category_id')->unsigned();
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             $table->integer('created_by');
             $table->timestamps();
         });

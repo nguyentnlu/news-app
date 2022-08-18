@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -53,10 +54,11 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required',
+            'password' => ['required', 'confirmed'],
             'status' => 'required',
             'role' => ['required', 'array']
         ]);
+        $data['password'] = Hash::make($request->password);
 
         $dataAdded = $this->user->create($data);
         $dataAdded->roles()->sync($data['role']);
@@ -65,16 +67,16 @@ class UserController extends Controller
             ->with('message', 'Successfully created!');
     }
 
+    public function show($id)
+    {
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -87,7 +89,7 @@ class UserController extends Controller
         $this->authorize('can_do', ['edit user']);
         $data = $this->user->find($id);
         $dataRoles = $data->roles()->get();
-        
+
         $roles = $this->role->all();
 
         return view('admin.user.update', ['user' => $data, 'roles' => $roles, 'dataRoles' => $dataRoles]);
@@ -122,23 +124,44 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
+        $this->authorize('can_do', ['delete user']);
+        $user->roles()->detach();
+        $user->delete();
+
+        return redirect()->route('user.index')
+            ->with('message', 'Successfully deleted');
     }
 
-    /**
-     * Disable/Enable role status
-     */
-    // public function setStatus($id)
-    // {
-    //     $this->authorize('can_do', ['enable user']);
-    //     $user = User::find($id);
-    //     $user->status = !($user->status);
-    //     $user->save();
+    public function profile()
+    {
+        $data = $this->user->find(auth()->id());
+        $dataRoles = $data->roles()->get();
 
-    //     $message = 'Successfully change ' . $user->name . ' status!';
+        $roles = $this->role->all();
+        return view('admin.user.profile', ['user' => $data, 'roles' => $roles, 'dataRoles' => $dataRoles]);
+    }
 
-    //     return redirect()->route('user.index')
-    //         ->with('message', $message);
-    // }
+    public function profileSave(Request $request)
+    {
+        $user = $this->user->find(auth()->id());
+        $data = $request->validate([
+            'name' => 'required',
+            'birthday' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ]);
+        if ($data['password']) {
+            $user->update([
+                    // 'password' => Hash::make($request->password),
+                ]
+            );
+        }
+        $user->fill($data)->save();
+
+        return redirect()->route('profile')
+            ->with('message', 'Successfully updated!');
+    }
 }

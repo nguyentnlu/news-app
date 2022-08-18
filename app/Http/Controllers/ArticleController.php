@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -29,14 +30,14 @@ class ArticleController extends Controller
         $this->authorize('can_do', ['read article']);
         $articles = $this->article->with(['author', 'category'])->latest()->paginate(5);
         
-        return view('admin.article.view', ['articles' => $articles]);
+        return view('admin.article.view', compact('articles'));
     }
 
     public function show($id)
     {
         $this->authorize('can_do', ['read article']);
         $data = $this->article->find($id);
-        $dataTags = $data->tags()->get();
+        $dataTags = $data->tags()->where('status', Article::ENABLE_STATUS)->get();
 
         $category = $this->category->all();
 
@@ -46,8 +47,8 @@ class ArticleController extends Controller
     public function create()
     {
         $this->authorize('can_do', ['create article']);
-        $category = $this->category->all();
-        $tags = $this->tag->all();
+        $category = $this->category->where('status', Article::ENABLE_STATUS)->get();
+        $tags = $this->tag->where('status', Article::ENABLE_STATUS)->get();
 
         return view('admin.article.create', ['category' => $category, 'tags' => $tags]);
     }
@@ -80,7 +81,7 @@ class ArticleController extends Controller
     {
         $this->authorize('can_do', ['edit article']);
         $data = $this->article->find($id);
-        $dataTags = $data->tags()->get();
+        $dataTags = $data->tags()->where('status', Article::ENABLE_STATUS)->get();
 
         $category = $this->category->all();
         $tags = $this->tag->all();
@@ -105,6 +106,7 @@ class ArticleController extends Controller
         if(empty($fileName)){
             $data['url'] = $article->url;
         } else {
+            Storage::disk('public')->delete($article->url);
             $data['url'] = $fileName;
         }
 
@@ -120,7 +122,7 @@ class ArticleController extends Controller
         if($request->hasFile('url')){
             $file = $request->file('url');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $request->file('url')->storeAs('images', $fileName);
+            $request->file('url')->storeAs('public', $fileName);
             return $fileName;
         }
         return '';
@@ -151,4 +153,5 @@ class ArticleController extends Controller
         return redirect()->route('article.index')
             ->with('message', $message);
     }
+
 }

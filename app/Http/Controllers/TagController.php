@@ -61,13 +61,13 @@ class TagController extends Controller
 
         $this->tag->find($tag_id)->fill($data)->save();
 
-        return redirect('/tag');
+        return redirect('/admin/tag');
     }
 
     public function destroy($id)
     {
         $this->authorize('can_do', ['delete tag']);
         $this->tag->delete($id);
-        return redirect('/tag');
+        return redirect('/admin/tag');
     }
 }

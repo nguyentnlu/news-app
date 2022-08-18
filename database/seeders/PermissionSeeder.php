@@ -17,58 +17,70 @@ class PermissionSeeder extends Seeder
     {
         Permission::insert([
             [
-                'name' => 'read category',
-            ],
-            [
-                'name' => 'edit category',
-            ],
-            [
-                'name' => 'create category',
-            ],
-            [
-                'name' => 'delete category',
-            ],
-            [
                 'name' => 'read article',
             ],
             [
-                'name' => 'edit article',
-            ],
-            [
-                'name' => 'enable article',
-            ],
-            [
-                'name' => 'create article',
-            ],
-            [
-                'name' => 'delete article',
+                'name' => 'read category',
             ],
             [
                 'name' => 'read tag',
             ],
             [
-                'name' => 'edit tag',
-            ],
-            [
-                'name' => 'create tag',
-            ],
-            [
-                'name' => 'delete tag',
-            ],
-            [
                 'name' => 'read user',
-            ],
-            [
-                'name' => 'edit user',
-            ],
-            [
-                'name' => 'delete user',
             ],
             [
                 'name' => 'read role',
             ],
             [
+                'name' => 'create article',
+            ],
+            [
+                'name' => 'create category',
+            ],
+            [
+                'name' => 'create tag',
+            ],
+            [
+                'name' => 'create user',
+            ],
+            [
+                'name' => 'create role',
+            ],
+            [
+                'name' => 'enable article',
+            ],
+            [
+                'name' => 'edit article',
+            ],
+            [
+                'name' => 'edit category',
+            ],
+            [
+                'name' => 'edit tag',
+            ],
+            [
+                'name' => 'edit account info',
+            ],
+            [
+                'name' => 'edit user',
+            ],
+            [
                 'name' => 'edit role',
+            ],
+            [
+                'name' => 'delete article',
+            ],
+            [
+                'name' => 'delete category',
+            ],
+            [
+                'name' => 'delete tag',
+            ],
+            [
+                'name' => 'delete user',
+            ],
+            [
+                'name' => 'delete role',
             ],
         ]);
     }

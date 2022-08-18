@@ -17,11 +17,11 @@ class UserSeeder extends Seeder
     {
         User::insert([
             'name' => 'Nguyen Lu',
-            'email' => 'nguyenlu@gmailcom',
+            'email' => 'nguyenlu@gmail.com',
             'password' => Hash::make('12345678'),
-            // 'role_id' => 1,
-            'status' => 1,
-            'created_at' => date('Y/m/d')
+            'status' => true,
+            'is_admin' => true,
+            'created_at' => date('Y/m/d'),
         ]);
     }
 }

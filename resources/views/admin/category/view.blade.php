@@ -14,9 +14,11 @@
                         <div class="row g-4">
 
                             <div class="col-12">
+                            @if(Gate::check('can_do', ['create category']))
                                 <div class="d-flex justify-content-end">
                                     <a href="{{ route('category.create')}}" class="btn btn-primary col-2">Create</a>
                                 </div>
+                                @endif
                                 <br />
                                 @if (session()->has('message'))
                                 <div class="alert alert-success">
@@ -56,8 +58,12 @@
                                                     <form class="d-flex justify-content-end" action="{{ route('category.destroy', $category->id) }}" method="POST">
                                                         @method('DELETE')
                                                         {{csrf_field()}}
+                                                        @if(Gate::check('can_do', ['edit category']))
                                                         <a class="btn btn-success" style="display:inline" href="{{ route('category.edit', $category->id)}}">Edit</a> |
+                                                        @endif
+                                                        @if(Gate::check('can_do', ['delete category']))
                                                         <button id="delete" style="display:inline" onclick="return confirm('Are you sure you want to delete this category?')" class="btn btn-warning">Delete</button>
+                                                        @endif
                                                     </form>
 
                                                 </td>

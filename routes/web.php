@@ -42,6 +42,9 @@ Route::group([
     Route::resource('permission', PermissionController::class);
 });
 
+Route::get('/profile', [UserController::class, 'profile'])->middleware(['auth'])->name('profile');
+Route::put('/profile/save', [UserController::class, 'profileSave'])->middleware(['auth'])->name('profile-save');
+
 // Route::get('/admin/role/status/{id}', [RoleController::class, 'setStatus']);
 // Route::get('/admin/user/status/{id}', [UserController::class, 'setStatus']);
 Route::get('/admin/article/status/{id}', [ArticleController::class, 'setStatus']);

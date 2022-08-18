@@ -1,5 +1,5 @@
 <x-app-layout>
-@if(Gate::check('can_do', ['read user']))
+    @if(Gate::check('can_do', ['read user']))
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -14,9 +14,11 @@
                         <div class="row g-4">
 
                             <div class="col-12">
+                                @if(Gate::check('can_do', ['create user']))
                                 <div class="d-flex justify-content-end">
                                     <a href="{{ route('user.create')}}" class="btn btn-primary col-2">Create</a>
                                 </div>
+                                @endif
                                 <br />
                                 @if (session()->has('message'))
                                 <div class="alert alert-success">
@@ -38,6 +40,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach($users as $user)
+                                            @if(($user->is_admin) != 1)
                                             <tr>
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->name }}</td>
@@ -56,12 +59,17 @@
                                                     <form class="d-flex justify-content-end" action="{{ route('user.destroy', $user->id) }}" method="POST">
                                                         @method('DELETE')
                                                         {{csrf_field()}}
+                                                        @if(Gate::check('can_do', ['edit user']))
                                                         <a class="btn btn-success" style="display:inline" href="{{ route('user.edit', $user->id)}}">Edit</a>|
+                                                        @endif
+                                                        @if(Gate::check('can_do', ['delete user']))
                                                         <button style="display:inline" onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-warning">Delete</button>
+                                                        @endif
                                                     </form>
 
                                                 </td>
                                             </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -73,5 +81,5 @@
             </div>
         </div>
     </div>
-@endif
+    @endif
 </x-app-layout>

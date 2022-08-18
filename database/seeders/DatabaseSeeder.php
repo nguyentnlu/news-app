@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\PermissionRole;
+use App\Models\RoleUser;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,10 +26,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CategorySeeder::class,
-            // ArticleSeeder::class,
+            ArticleSeeder::class,
             TagSeeder::class,
-            // RoleSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
             UserSeeder::class,
+            // PermissionRoleSeeder::class,
+            // RoleUserSeeder::class,
         ]);
     }
 }

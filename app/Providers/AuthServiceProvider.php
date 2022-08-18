@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
 use App\Models\Permission;
 use App\Models\User;
+use App\Policies\ArticlePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Article::class => ArticlePolicy::class,
     ];
 
     /**
@@ -43,5 +46,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('can_do', function(User $user, $permissionName) {
             return $user->hasPermission($permissionName);
         });
+
+        Gate::define('article_owner', [ArticlePolicy::class, 'update']);
     }
 }

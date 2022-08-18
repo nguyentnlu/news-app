@@ -20,31 +20,31 @@ class TagSeeder extends Seeder
         [
             'name' => 'sports',
             'slug' => 'sports-tag',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y-m-d')
         ],
         [
             'name' => 'people',
             'slug' => 'people-tag',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y-m-d')
         ],
         [
             'name' => 'healthy',
             'slug' => 'healthy-tag',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y-m-d')
         ],
         [
             'name' => 'technology',
             'slug' => 'technology-tag',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y-m-d')
         ],
         [
             'name' => 'science',
             'slug' => 'science-tag',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y-m-d')
         ]
     ]);

@@ -1,5 +1,5 @@
 <x-app-layout>
-@if(Gate::check('can_do', ['read role']))
+    @if(Gate::check('can_do', ['read role']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Role') }}
@@ -12,9 +12,11 @@
                     <div class="container-fluid pt-4 px-4">
                         <div class="row g-4">
                             <div class="col-12">
+                                @if(Gate::check('can_do', ['create role']))
                                 <div class="d-flex justify-content-end">
                                     <a href="{{ route('role.create')}}" class="btn btn-primary col-2">Create</a>
                                 </div>
+                                @endif
                                 <br />
                                 @if (session()->has('message'))
                                 <div class="alert alert-success">
@@ -35,6 +37,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach($roles as $role)
+                                            @if(($role->id) != 1)
                                             <tr>
                                                 <td>{{ $role->id }}</td>
                                                 <td>{{ $role->name }}</td>
@@ -46,12 +49,15 @@
                                                     else
                                                         echo "Enable";
                                                     ?>
+                                                    @if(Gate::check('can_do', ['edit role']))
                                                 <td>
                                                     <div class="d-flex justify-content-end">
                                                         <a style="display:inline" class="btn btn-success" href="{{ route('role.edit', $role->id)}}">Edit</a>
                                                     </div>
                                                 </td>
+                                                @endif
                                             </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -63,5 +69,5 @@
             </div>
         </div>
     </div>
-@endif
+    @endif
 </x-app-layout>

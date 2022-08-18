@@ -24,16 +24,16 @@
                             @method('PUT')
                             {{csrf_field()}}
                             <div class="mb-3">
-                                <label for="InputName" class="form-label">Tag name</label>
-                                <input value="{{ $tag->name}}" name="name" type="text" class="form-control" aria-describedby="emailHelp">
+                                <label for="name" class="form-label">Tag name</label>
+                                <input id="name" value="{{ $tag->name}}" name="name" type="text" class="form-control" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="InputName" class="form-label">Tag slug</label>
-                                <input value="{{ $tag->slug}}" name="slug" type="text" class="form-control" aria-describedby="emailHelp">
+                                <label for="slug" class="form-label">Tag slug</label>
+                                <input id="slug" value="{{ $tag->slug}}" name="slug" type="text" class="form-control" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tag Status</label>
-                                <select value="{{$tag->status}}" name="status" id="cars" style="height: 35px">
+                                <label for="status" class="form-label">Tag Status</label>
+                                <select value="{{$tag->status}}" name="status" id="status" style="height: 35px">
                                     <option <?php if ($tag->status == 0) {
                                                 echo ("selected");
                                             } ?> value="0">disable</option>

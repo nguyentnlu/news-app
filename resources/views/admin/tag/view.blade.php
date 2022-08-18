@@ -56,8 +56,12 @@
                                                     <form class="d-flex justify-content-end" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
                                                         @method('DELETE')
                                                         {{csrf_field()}}
+                                                        @if(Gate::check('can_do', ['edit tag']))
                                                         <a class="btn btn-success" style="display:inline" href="{{ route('tag.edit', $tag->id)}}">Edit</a>|
+                                                        @endif
+                                                        @if(Gate::check('can_do', ['delete tag']))
                                                         <button style="display:inline" onclick="return confirm('Are you sure you want to delete this tag?')" class="btn btn-warning">Delete</button>
+                                                        @endif
                                                     </form>
                                                 </td>
                                             </tr>

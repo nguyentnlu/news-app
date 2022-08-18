@@ -15,7 +15,7 @@
                     <dd class="col-sm-8 p-2">{{$article->title}}</dd><br />
 
                     <dt class="col-sm-4 p-2">Image</dt>
-                    <dd class="col-sm-8 p-2"><img src="{{ asset('images/'.$article->url) }}" /></dd>
+                    <dd class="col-sm-8 p-2"><img src="{{ asset('storage/'.$article->url) }}" /></dd>
 
                     <dt class="col-sm-4 text-truncate p-2">Category</dt>
                     <dd class="col-sm-8 p-2">{{$article -> category -> name}}</dd>
@@ -48,7 +48,7 @@
                     <dd class="col-sm-8 p-2" id='textareaContent'>
                         <?php echo $article->content ?>
                     </dd>
-                    @if(Gate::check('can_do', ['edit article']))
+                    @if(Gate::check('article_owner', $article))
                     <div class="d-flex justify-content-end">
                         <a class="btn btn-success" style="display:inline" href="{{ route('article.edit', $article->id)}}">Edit article</a>
                     </div>

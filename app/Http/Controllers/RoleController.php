@@ -138,12 +138,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Role $role)
-    // {
-    //     $role->permissions()->detach();
-    //     $role->delete();
+    public function destroy(Role $role)
+    {
+        $role->permissions()->detach();
+        $role->delete();
 
-    //     return redirect('/role');
-    // }
+        return redirect()->route('role.index')
+            ->with('message', 'Successfully deleted');
+    }
 
 }

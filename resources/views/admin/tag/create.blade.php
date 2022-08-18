@@ -23,16 +23,16 @@
                         <form action="{{ route('tag.store') }}" method="POST">
                             {{csrf_field()}}
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tag name</label>
-                                <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <label for="name" class="form-label">Tag name</label>
+                                <input name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tag slug</label>
-                                <input name="slug" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <label for="slug" class="form-label">Tag slug</label>
+                                <input name="slug" type="text" class="form-control" id="slug" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tag Status</label>
-                                <select name="status" id="cars" style="height: 35px">
+                                <label for="status" class="form-label">Tag Status</label>
+                                <select name="status" id="status" style="height: 35px">
                                     <option value="1">enable</option>
                                     <option value="0">disable</option>
 

@@ -19,22 +19,22 @@ class RoleSeeder extends Seeder
         Role::insert([
         [
             'name' => 'Admin',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y/m/d')
         ],
         [
             'name' => 'Account manager',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y/m/d')
         ],
         [
             'name' => 'Content manager',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y/m/d')
         ],
         [
             'name' => 'Writer',
-            'status' => 1,
+            'status' => true,
             'created_at' => date('Y/m/d')
         ]
     ]);
