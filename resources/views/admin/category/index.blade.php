@@ -1,11 +1,11 @@
 <x-app-layout>
-    @if(Gate::check('can_do', ['read user']))
-
+@if(Gate::check('can_do', ['read category']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Category') }}
         </h2>
     </x-slot>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -14,9 +14,9 @@
                         <div class="row g-4">
 
                             <div class="col-12">
-                                @if(Gate::check('can_do', ['create user']))
+                            @if(Gate::check('can_do', ['create category']))
                                 <div class="d-flex justify-content-end">
-                                    <a href="{{ route('user.create')}}" class="btn btn-primary col-2">Create</a>
+                                    <a href="{{ route('category.create')}}" class="btn btn-primary col-2">Create</a>
                                 </div>
                                 @endif
                                 <br />
@@ -30,8 +30,8 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Email</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Slug</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Created at</th>
                                                 <th scope="col">Updated at</th>
@@ -39,40 +39,41 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($users as $user)
-                                            @if(($user->is_admin) != 1)
+                                            @foreach($categories as $category)
                                             <tr>
-                                                <td>{{ $user->id }}</td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
+                                                <td>{{$category['id']}}</td>
+                                                <td>{{$category['name']}}</td>
+                                                <td>{{$category['slug']}}</td>
                                                 <td>
                                                     <?php
-                                                    if ($user->status == 0)
-                                                        echo "Disable";
+                                                    if ($category['status'] == 0)
+                                                        echo "disable";
                                                     else
-                                                        echo "Enable";
+                                                        echo "enable";
                                                     ?>
                                                 </td>
-                                                <td>{{$user['created_at']}}</td>
-                                                <td>{{$user['updated_at']}}</td>
+                                                <td>{{$category['created_at']}}</td>
+                                                <td>{{$category['updated_at']}}</td>
                                                 <td>
-                                                    <form class="d-flex justify-content-end" action="{{ route('user.destroy', $user->id) }}" method="POST">
+                                                    <form class="d-flex justify-content-end" action="{{ route('category.destroy', $category->id) }}" method="POST">
                                                         @method('DELETE')
-                                                        {{csrf_field()}}
-                                                        @if(Gate::check('can_do', ['edit user']))
-                                                        <a class="btn btn-success" style="display:inline" href="{{ route('user.edit', $user->id)}}">Edit</a>|
+                                                        @csrf
+                                                        @if(Gate::check('can_do', ['edit category']))
+                                                        <a class="btn btn-success" style="display:inline" href="{{ route('category.edit', $category->id)}}">Edit</a> |
                                                         @endif
-                                                        @if(Gate::check('can_do', ['delete user']))
-                                                        <button style="display:inline" onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-warning">Delete</button>
+                                                        @if(Gate::check('can_do', ['delete category']))
+                                                        <button id="delete" style="display:inline" onclick="return confirm('Are you sure you want to delete this category?')" class="btn btn-warning">Delete</button>
                                                         @endif
                                                     </form>
 
                                                 </td>
                                             </tr>
-                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="py-8">
+                                    {{ $categories->appends(request()->query())->links() }}
                                 </div>
                             </div>
                         </div>

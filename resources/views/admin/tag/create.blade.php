@@ -1,5 +1,5 @@
 <x-app-layout>
-@if(Gate::check('can_do', ['create tag']))
+    @if(Gate::check('can_do', ['create tag']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Tag') }}
@@ -11,28 +11,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="bg-light rounded h-100 p-4">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
                         <form action="{{ route('tag.store') }}" method="POST">
-                            {{csrf_field()}}
+                            @csrf
                             <div class="mb-3">
-                                <label for="name" class="form-label">Tag name</label>
-                                <input name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+                                <x-forms.input label="Tag name" name="name" id="name" />
                             </div>
                             <div class="mb-3">
-                                <label for="slug" class="form-label">Tag slug</label>
-                                <input name="slug" type="text" class="form-control" id="slug" aria-describedby="emailHelp">
+                                <x-forms.input label="Tag slug" name="slug" id="slug" />
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Tag Status</label>
-                                <select name="status" id="status" style="height: 35px">
+                                <select name="status" id="status" >
                                     <option value="1">enable</option>
                                     <option value="0">disable</option>
 

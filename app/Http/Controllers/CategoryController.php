@@ -30,7 +30,7 @@ class CategoryController extends Controller
         $this->authorize('can_do', ['read category']);
         $categories = $this->category->oldest()->paginate(5);
 
-        return view('admin.category.view', ['categories' => $categories]);
+        return view('admin.category.index', ['categories' => $categories]);
     }
     public function show()
     {
@@ -66,10 +66,10 @@ class CategoryController extends Controller
     {
         $this->authorize('can_do', ['edit category']);
         $data = $this->category->find($id);
-        $dataTags = $data->tags()->get();
+        $dataTags = $data->tags->pluck('id')->toArray();
         $tags = $this->tag->all();
 
-        return view('admin.category.update', ['category' => $data, 'dataTags' => $dataTags, 'tags' => $tags]);
+        return view('admin.category.edit', ['category' => $data, 'dataTags' => $dataTags, 'tags' => $tags]);
     }
 
     public function update(Request $request, $id)

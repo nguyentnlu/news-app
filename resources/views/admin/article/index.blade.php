@@ -41,7 +41,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($articles as $article)
-                                    @if(Gate::check('article_owner', $article))
+                                    @if(Gate::check('article_owner', $article) || Gate::check('can_do', ['enable article']))
                                     <tr>
                                         <td>{{$article -> id}}</td>
                                         <td>{{$article -> title}}</td>
@@ -55,10 +55,6 @@
                                         <td>{{$article -> updated_at}}</td>
                                         @if(Gate::check('can_do', ['enable article']))
                                         <td>
-                                            <!-- <label class="switch">
-                                                <input type="checkbox" checked>
-                                                <span class="slider round"></span>
-                                            </label> -->
                                             <?php
                                             if ($article->status) {
                                                 echo '<a class="btn btn-link" href="/admin/article/status/' . $article->id . '">Enable</a>';
@@ -71,7 +67,7 @@
                                         <td>
                                             <form class="d-flex justify-content-end" action="{{ route('article.destroy', $article->id) }}" method="POST">
                                                 @method('DELETE')
-                                                {{csrf_field()}}
+                                                @csrf
                                                 <a class="btn btn-info" style="display:inline" href="{{ route('article.show', $article->id)}}">Show</a>
                                                 @if(Gate::check('can_do', ['enable article']))
                                                 |<button style="display:inline" onclick="return confirm('Are you sure you want to delete this article?')" class="btn btn-warning delete">Delete</button>

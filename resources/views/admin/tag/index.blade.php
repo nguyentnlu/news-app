@@ -1,8 +1,8 @@
 <x-app-layout>
-@if(Gate::check('can_do', ['read category']))
+    @if(Gate::check('can_do', ['read tag']))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category') }}
+            {{ __('Tag') }}
         </h2>
     </x-slot>
 
@@ -14,11 +14,9 @@
                         <div class="row g-4">
 
                             <div class="col-12">
-                            @if(Gate::check('can_do', ['create category']))
                                 <div class="d-flex justify-content-end">
-                                    <a href="{{ route('category.create')}}" class="btn btn-primary col-2">Create</a>
+                                    <a href="{{ route('tag.create')}}" class="btn btn-primary col-2">Create</a>
                                 </div>
-                                @endif
                                 <br />
                                 @if (session()->has('message'))
                                 <div class="alert alert-success">
@@ -30,8 +28,8 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
-                                                <th scope="col">Category</th>
-                                                <th scope="col">Slug</th>
+                                                <th scope="col">Tag</th>
+                                                <th scope="col">SLug</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Created at</th>
                                                 <th scope="col">Updated at</th>
@@ -39,33 +37,32 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($categories as $category)
+                                            @foreach($tags as $tag)
                                             <tr>
-                                                <td>{{$category['id']}}</td>
-                                                <td>{{$category['name']}}</td>
-                                                <td>{{$category['slug']}}</td>
+                                                <td>{{$tag['id']}}</td>
+                                                <td>{{$tag['name']}}</td>
+                                                <td>{{$tag['slug']}}</td>
                                                 <td>
                                                     <?php
-                                                    if ($category['status'] == 0)
+                                                    if ($tag['status'] == 0)
                                                         echo "disable";
                                                     else
                                                         echo "enable";
                                                     ?>
                                                 </td>
-                                                <td>{{$category['created_at']}}</td>
-                                                <td>{{$category['updated_at']}}</td>
+                                                <td>{{$tag['created_at']}}</td>
+                                                <td>{{$tag['updated_at']}}</td>
                                                 <td>
-                                                    <form class="d-flex justify-content-end" action="{{ route('category.destroy', $category->id) }}" method="POST">
+                                                    <form class="d-flex justify-content-end" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
                                                         @method('DELETE')
-                                                        {{csrf_field()}}
-                                                        @if(Gate::check('can_do', ['edit category']))
-                                                        <a class="btn btn-success" style="display:inline" href="{{ route('category.edit', $category->id)}}">Edit</a> |
+                                                        @csrf
+                                                        @if(Gate::check('can_do', ['edit tag']))
+                                                        <a class="btn btn-success" style="display:inline" href="{{ route('tag.edit', $tag->id)}}">Edit</a>|
                                                         @endif
-                                                        @if(Gate::check('can_do', ['delete category']))
-                                                        <button id="delete" style="display:inline" onclick="return confirm('Are you sure you want to delete this category?')" class="btn btn-warning">Delete</button>
+                                                        @if(Gate::check('can_do', ['delete tag']))
+                                                        <button style="display:inline" onclick="return confirm('Are you sure you want to delete this tag?')" class="btn btn-warning">Delete</button>
                                                         @endif
                                                     </form>
-
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -73,7 +70,7 @@
                                     </table>
                                 </div>
                                 <div class="py-8">
-                                    {{ $categories->appends(request()->query())->links() }}
+                                    {{ $tags->appends(request()->query())->links() }}
                                 </div>
                             </div>
                         </div>

@@ -11,43 +11,27 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="bg-light rounded h-100 p-4">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
                         <form action="{{ route('user.store') }}" method="POST">
-                            {{csrf_field()}}
+                            @csrf
                             <div class="mb-3">
-                                <label for="name" class="form-label">User name</label>
-                                <input name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+                                <x-forms.input label="Name" name="name" id="name"/>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                                <x-forms.input label="Email" name="email" id="email"/>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input name="password" type="password" class="form-control" id="password" aria-describedby="emailHelp">
+                                <x-forms.input type="password" label="Password" name="password" id="password"/>
                             </div>
                             <div class="mb-3">
-                                <label for="password_confirmation" class="form-label">Password confirm</label>
-                                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" aria-describedby="emailHelp">
+                                <x-forms.input type="password" label="Password confirmation" name="password_confirmation" id="password_confirmation"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Role</label><br>
-                                @foreach($roles as $role)
-                                <input id="role" type="checkbox" name="role[]" value="{{$role->id}}">
-                                <label for="role">{{$role->name}}</label><br>
-                                @endforeach
+                                <x-forms.checkbox-list name="role[]" id="role" :items="$roles"/>                    
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">User Status</label>
-                                <select name="status" id="status" style="height: 35px">
+                                <select name="status" id="status" >
                                     <option value="1">enable</option>
                                     <option value="0">disable</option>
                                 </select>

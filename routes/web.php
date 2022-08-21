@@ -33,7 +33,8 @@ require __DIR__ . '/auth.php';
 
 Route::group([
     'prefix' => 'admin',
-],function () {
+    'middleware' => ['auth'],
+], function () {
     Route::resource('category', CategoryController::class);
     Route::resource('tag', TagController::class);
     Route::resource('article', ArticleController::class);
@@ -44,7 +45,6 @@ Route::group([
 
 Route::get('/profile', [UserController::class, 'profile'])->middleware(['auth'])->name('profile');
 Route::put('/profile/save', [UserController::class, 'profileSave'])->middleware(['auth'])->name('profile-save');
+Route::put('/profile/changPassword', [UserController::class, 'changePassword'])->middleware(['auth'])->name('password-change');
 
-// Route::get('/admin/role/status/{id}', [RoleController::class, 'setStatus']);
-// Route::get('/admin/user/status/{id}', [UserController::class, 'setStatus']);
 Route::get('/admin/article/status/{id}', [ArticleController::class, 'setStatus']);

@@ -48,5 +48,6 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('article_owner', [ArticlePolicy::class, 'update']);
+
     }
 }

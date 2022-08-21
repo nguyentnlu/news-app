@@ -29,7 +29,7 @@ class RoleController extends Controller
         $this->authorize('can_do', ['read role']);
         $roles = $this->role->all();
 
-        return view('admin.role.view', ['roles' => $roles]);
+        return view('admin.role.index', ['roles' => $roles]);
     }
 
     /**
@@ -103,10 +103,10 @@ class RoleController extends Controller
     {
         $this->authorize('can_do', ['edit role']);
         $data = $this->role->find($id);
-        $dataPermissions = $data->permissions()->get();
+        $dataPermissions = $data->permissions->pluck('id')->toArray();
         $permissions = $this->permission->all();
 
-        return view('admin.role.update', ['role' => $data, 'dataPermissions' => $dataPermissions, 'permissions' => $permissions]);
+        return view('admin.role.edit', ['role' => $data, 'dataPermissions' => $dataPermissions, 'permissions' => $permissions]);
     }
 
     /**

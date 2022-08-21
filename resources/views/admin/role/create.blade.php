@@ -11,31 +11,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="bg-light rounded h-100 p-4">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
                         <form action="{{ route('role.store') }}" method="POST">
-                            {{csrf_field()}}
+                            @csrf
                             <div class="mb-3">
-                                <label for="role" class="form-label">Role name</label>
-                                <input name="name" type="text" class="form-control" id="role" aria-describedby="emailHelp">
+                                <x-forms.input label="Role" name="name" id="name" />
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Permissions</label><br>
-                                @foreach($permissions as $permission)
-                                <input type="checkbox" id="vehicle1" name="permission[]" value="{{$permission->id}}">
-                                <label for="vehicle1">{{$permission->name}}</label><br>
-                                @endforeach
+                                <label class="form-label">Permissions</label><br>
+                                <x-forms.checkbox-list name="permission[]" id="permission" :items="$permissions"/>                    
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Role Status</label>
-                                <select id="status" name="status" id="cars" style="height: 35px">
+                                <select id="status" name="status" >
                                     <option value="1">enable</option>
                                     <option value="0">disable</option>
                                 </select>

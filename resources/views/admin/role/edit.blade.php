@@ -11,37 +11,19 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="bg-light rounded h-100 p-4">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
                         <form action="{{ route('role.update', $role->id) }}" method="POST">
                             @method('PUT')
-                            {{csrf_field()}}
+                            @csrf
                             <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <input readonly id="role" value="{{ $role->name}}" name="name" type="text" class="form-control" aria-describedby="emailHelp">
+                                <x-forms.input label="Role" name="name" id="name" value="{{ $role->name }}"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Permissions</label><br>
-                                @foreach($permissions as $permission)
-                                <input require <?php
-                                        foreach ($dataPermissions as $dataPermission) {
-                                            if ($permission->id == $dataPermission->id)
-                                                echo "checked";
-                                        }
-                                        ?> type="checkbox" id="permission" name="permission[]" value="{{$permission->id}}">
-                                <label for="permission">{{$permission->name}}</label><br>
-                                @endforeach
+                                <x-forms.checkbox-list name="permission[]" id="permission" :items="$permissions" :selected="$dataPermissions" />                    
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Role Status</label>
-                                <select value="{{$role->status}}" name="status" id="status" style="height: 35px">
+                                <select value="{{$role->status}}" name="status" id="status" >
                                     <option <?php if ($role->status == 1) {
                                                 echo ("selected");
                                             } ?> value="1">Enable</option>

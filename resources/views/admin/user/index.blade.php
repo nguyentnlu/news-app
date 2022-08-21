@@ -1,11 +1,11 @@
 <x-app-layout>
-    @if(Gate::check('can_do', ['read tag']))
+    @if(Gate::check('can_do', ['read user']))
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tag') }}
+            {{ __('Dashboard') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -14,9 +14,11 @@
                         <div class="row g-4">
 
                             <div class="col-12">
+                                @if(Gate::check('can_do', ['create user']))
                                 <div class="d-flex justify-content-end">
-                                    <a href="{{ route('tag.create')}}" class="btn btn-primary col-2">Create</a>
+                                    <a href="{{ route('user.create')}}" class="btn btn-primary col-2">Create</a>
                                 </div>
+                                @endif
                                 <br />
                                 @if (session()->has('message'))
                                 <div class="alert alert-success">
@@ -28,8 +30,8 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
-                                                <th scope="col">Tag</th>
-                                                <th scope="col">SLug</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Email</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Created at</th>
                                                 <th scope="col">Updated at</th>
@@ -37,40 +39,40 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($tags as $tag)
+                                            @foreach($users as $user)
+                                            @if(($user->is_admin) != 1)
                                             <tr>
-                                                <td>{{$tag['id']}}</td>
-                                                <td>{{$tag['name']}}</td>
-                                                <td>{{$tag['slug']}}</td>
+                                                <td>{{ $user->id }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
                                                 <td>
                                                     <?php
-                                                    if ($tag['status'] == 0)
-                                                        echo "disable";
+                                                    if ($user->status == 0)
+                                                        echo "Disable";
                                                     else
-                                                        echo "enable";
+                                                        echo "Enable";
                                                     ?>
                                                 </td>
-                                                <td>{{$tag['created_at']}}</td>
-                                                <td>{{$tag['updated_at']}}</td>
+                                                <td>{{$user['created_at']}}</td>
+                                                <td>{{$user['updated_at']}}</td>
                                                 <td>
-                                                    <form class="d-flex justify-content-end" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
+                                                    <form class="d-flex justify-content-end" action="{{ route('user.destroy', $user->id) }}" method="POST">
                                                         @method('DELETE')
-                                                        {{csrf_field()}}
-                                                        @if(Gate::check('can_do', ['edit tag']))
-                                                        <a class="btn btn-success" style="display:inline" href="{{ route('tag.edit', $tag->id)}}">Edit</a>|
+                                                        @csrf
+                                                        @if(Gate::check('can_do', ['edit user']))
+                                                        <a class="btn btn-success" style="display:inline" href="{{ route('user.edit', $user->id)}}">Edit</a>|
                                                         @endif
-                                                        @if(Gate::check('can_do', ['delete tag']))
-                                                        <button style="display:inline" onclick="return confirm('Are you sure you want to delete this tag?')" class="btn btn-warning">Delete</button>
+                                                        @if(Gate::check('can_do', ['delete user']))
+                                                        <button style="display:inline" onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-warning">Delete</button>
                                                         @endif
                                                     </form>
+
                                                 </td>
                                             </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
-                                </div>
-                                <div class="py-8">
-                                    {{ $tags->appends(request()->query())->links() }}
                                 </div>
                             </div>
                         </div>

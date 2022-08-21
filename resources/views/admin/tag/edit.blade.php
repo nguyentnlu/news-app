@@ -11,29 +11,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="bg-light rounded h-100 p-4">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
                         <form action="{{ route('tag.update', $tag->id) }}" method="POST">
                             @method('PUT')
-                            {{csrf_field()}}
+                            @csrf
                             <div class="mb-3">
-                                <label for="name" class="form-label">Tag name</label>
-                                <input id="name" value="{{ $tag->name}}" name="name" type="text" class="form-control" aria-describedby="emailHelp">
+                                <x-forms.input label="Tag name" name="name" id="name" value="{{ $tag->name }}" />
                             </div>
                             <div class="mb-3">
-                                <label for="slug" class="form-label">Tag slug</label>
-                                <input id="slug" value="{{ $tag->slug}}" name="slug" type="text" class="form-control" aria-describedby="emailHelp">
+                                <x-forms.input label="Tag slug" name="slug" id="slug" value="{{ $tag->slug }}"/>
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Tag Status</label>
-                                <select value="{{$tag->status}}" name="status" id="status" style="height: 35px">
+                                <select value="{{$tag->status}}" name="status" id="status" >
                                     <option <?php if ($tag->status == 0) {
                                                 echo ("selected");
                                             } ?> value="0">disable</option>

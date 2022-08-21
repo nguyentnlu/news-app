@@ -22,7 +22,7 @@ class TagController extends Controller
     public function index(){
         $this->authorize('can_do', ['read tag']);
         $tags = $this->tag->oldest()->paginate(5);
-        return view('admin.tag.view', ['tags' => $tags]);
+        return view('admin.tag.index', ['tags' => $tags]);
     }
     public function show(){}
 
@@ -48,7 +48,7 @@ class TagController extends Controller
     {
         $this->authorize('can_do', ['edit tag']);
         $data = $this->tag->find($tag_id);
-        return view('admin.tag.update', ['tag' => $data ]);
+        return view('admin.tag.edit', ['tag' => $data ]);
     }
 
     public function update(Request $request, $tag_id)

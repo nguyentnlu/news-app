@@ -8,7 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ArticleController extends Controller
 {
@@ -29,8 +29,8 @@ class ArticleController extends Controller
     {
         $this->authorize('can_do', ['read article']);
         $articles = $this->article->with(['author', 'category'])->latest()->paginate(5);
-        
-        return view('admin.article.view', compact('articles'));
+
+        return view('admin.article.index', compact('articles'));
     }
 
     public function show($id)
@@ -59,9 +59,9 @@ class ArticleController extends Controller
             'title' => 'required|unique:articles|max:255',
             'content' => 'required',
             'slug' => 'required',
-            'url' => 'required',
+            'url' => ['required', 'file', 'max:512'],
             'category_id' => 'required',
-            'tag' => 'nullable|array'
+            'tag' => 'nullable|array',
         ]);
 
         $fileName = $this->handleFileUpload($request);
@@ -70,7 +70,7 @@ class ArticleController extends Controller
         $data['created_by'] =  auth()->user()->id;
         $data['status'] = false;
         $article = $this->article->create($data);
-        
+
         $article->tags()->sync(Arr::get($data, 'tag', []));
 
         return redirect()->route('article.index')
@@ -79,14 +79,14 @@ class ArticleController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('can_do', ['edit article']);
+        // $this->authorize('can_do', ['edit article']);
         $data = $this->article->find($id);
-        $dataTags = $data->tags()->where('status', Article::ENABLE_STATUS)->get();
-
+        $dataTags = $data->tags->pluck('id')->toArray();
+            
         $category = $this->category->all();
-        $tags = $this->tag->all();
+        $tags = $this->tag->where('status', Article::ENABLE_STATUS)->get();
 
-        return view('admin.article.update', ['article' => $data, 'category' => $category, 'dataTags' => $dataTags, 'tags' => $tags]);
+        return view('admin.article.edit', ['article' => $data, 'category' => $category, 'dataTags' => $dataTags, 'tags' => $tags]);
     }
 
     public function update(Request $request, $id)
@@ -95,31 +95,35 @@ class ArticleController extends Controller
             'title' => 'required',
             'content' => 'required',
             'slug' => 'required',
-            'url' => ['nullable','file'],
+            'url' => ['nullable', 'file', 'max:512'],
             'category_id' => 'required',
-            'tag' => 'nullable|array'
+            'tag' => 'nullable|array',
         ]);
 
         $fileName = $this->handleFileUpload($request);
         $article = $this->article->find($id);
 
-        if(empty($fileName)){
+        if (empty($fileName)) {
             $data['url'] = $article->url;
         } else {
-            Storage::disk('public')->delete($article->url);
+            $filePath = public_path('storage/' . $article->url);
+            if (File::exists($filePath)) {
+                unlink($filePath);
+            }
             $data['url'] = $fileName;
         }
 
         $article->fill($data)->save();
-        
+
         $article->tags()->sync(Arr::get($data, 'tag', []));
 
         return redirect()->route('article.index')
             ->with('message', 'Successfully updated');
     }
 
-    public function handleFileUpload(Request $request){
-        if($request->hasFile('url')){
+    public function handleFileUpload(Request $request)
+    {
+        if ($request->hasFile('url')) {
             $file = $request->file('url');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $request->file('url')->storeAs('public', $fileName);
@@ -153,5 +157,4 @@ class ArticleController extends Controller
         return redirect()->route('article.index')
             ->with('message', $message);
     }
-
 }

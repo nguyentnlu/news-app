@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         $this->authorize('can_do', ['read user']);
         $users = $this->user->latest()->paginate(5);
-        return view('admin.user.view', ['users' => $users]);
+        return view('admin.user.index', ['users' => $users]);
     }
 
     /**
@@ -88,11 +88,11 @@ class UserController extends Controller
     {
         $this->authorize('can_do', ['edit user']);
         $data = $this->user->find($id);
-        $dataRoles = $data->roles()->get();
+        $dataRoles = $data->roles->pluck('id')->toArray();
 
         $roles = $this->role->all();
 
-        return view('admin.user.update', ['user' => $data, 'roles' => $roles, 'dataRoles' => $dataRoles]);
+        return view('admin.user.edit', ['user' => $data, 'roles' => $roles, 'dataRoles' => $dataRoles]);
     }
 
     /**
@@ -151,17 +151,36 @@ class UserController extends Controller
             'birthday' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'password' => 'required',
         ]);
-        if ($data['password']) {
-            $user->update([
-                    // 'password' => Hash::make($request->password),
-                ]
-            );
-        }
-        $user->fill($data)->save();
-
-        return redirect()->route('profile')
+        
+        if (Hash::check($data['password'], $user->password)) {
+            $data['password'] = $user->password;
+            $user->fill($data)->save();
+            return redirect()->route('profile')
             ->with('message', 'Successfully updated!');
+        }else{
+            return redirect()->route('profile')
+            ->with('error', 'Incorrect password!');
+        }
+    }
+
+    public function changePassword(Request $request){
+        $user = $this->user->find(auth()->id());
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => ['required', 'confirmed'],
+            'new_password_confirmation' => 'required',
+        ]);
+
+        if (Hash::check($request->current_password, $user->password)) {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            return redirect()->route('profile')
+            ->with('message_pass', 'Successfully updated!');
+        }else{
+            return redirect()->route('profile')
+            ->with('error_pass', 'Incorrect password!');
+        }
     }
 }
