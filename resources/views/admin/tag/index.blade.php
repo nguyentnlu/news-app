@@ -14,8 +14,14 @@
                         <div class="row g-4">
 
                             <div class="col-12">
-                                <div class="d-flex justify-content-end">
-                                    <a href="{{ route('tag.create')}}" class="btn btn-primary col-2">Create</a>
+                                <div class="row">
+                                    <div class="col-sm-6 d-flex justify-content-start">
+                                        <a href="{{ route('tag.create')}}" class="btn btn-primary col-2">Create</a>
+                                    </div>
+                                    <form class="col-sm-6 input-group d-flex justify-content-end">
+                                        <input type="search" name="search[title]" placeholder="Search..." />
+                                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                                    </form>
                                 </div>
                                 <br />
                                 @if (session()->has('message'))
@@ -24,7 +30,7 @@
                                 </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table id="table" class="table">
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
@@ -43,12 +49,7 @@
                                                 <td>{{$tag['name']}}</td>
                                                 <td>{{$tag['slug']}}</td>
                                                 <td>
-                                                    <?php
-                                                    if ($tag['status'] == 0)
-                                                        echo "disable";
-                                                    else
-                                                        echo "enable";
-                                                    ?>
+                                                    @if($tag['status'] == 0) Disable @else Enable @endif
                                                 </td>
                                                 <td>{{$tag['created_at']}}</td>
                                                 <td>{{$tag['updated_at']}}</td>
@@ -69,9 +70,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="py-8">
-                                    {{ $tags->appends(request()->query())->links() }}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,4 +78,16 @@
         </div>
     </div>
     @endif
+    <x-slot name="scripts">
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    "pagingType": "input",
+                    paging: false,
+                    info: false,
+                    "searching": false
+                });
+            });
+        </script>
+    </x-slot>
 </x-app-layout>

@@ -26,13 +26,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CategorySeeder::class,
-            ArticleSeeder::class,
+            // ArticleSeeder::class,
             TagSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            // PermissionRoleSeeder::class,
-            // RoleUserSeeder::class,
         ]);
     }
 }

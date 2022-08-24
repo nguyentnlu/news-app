@@ -2,60 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Tag;
-use App\Models\User;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class CategoryController extends Controller
 {
-    protected $category;
-    protected $tag;
-    protected $article;
-    protected $user;
+    protected $categoryService;
 
     public function __construct()
     {
-        $this->category = new Category();
-        $this->tag = new Tag();
-        $this->article = new Article();
-        $this->user = new User();
-
+        $this->categoryService = new CategoryService();
+        date_default_timezone_set('asia/ho_chi_minh');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('can_do', ['read category']);
-        $categories = $this->category->oldest()->paginate(5);
+        $categories = Category::get();
+        
+        //search
+        $filter = $request->query();
+        if (Arr::has($filter, 'search')) {
+            foreach (Arr::get($filter, 'search') as $column => $value) {
+                $articles = Category::where($column, 'like', "%{$value}%")->get();
+            }
+        }
 
-        return view('admin.category.index', ['categories' => $categories]);
+        return view('admin.category.index', compact(['categories']));
     }
     public function show()
     {
+        //
     }
 
     public function create()
     {
         $this->authorize('can_do', ['create category']);
-        $tags = $this->tag->all();
+        $tags = Tag::all();
 
-        return view('admin.category.create', ['tags' => $tags]);
+        return view('admin.category.create', compact(['tags']));
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'status' => 'required',
-            'tag' => 'nullable|array'
-        ]);
-        
-        $dataAdded = $this->category->create($data);
-        if (isset($data['tag'])) {
-            $dataAdded->tags()->sync(Arr::get($data, 'tag', []));
+        $category = $this->categoryService->create($request->validated());
+        if (is_null($category)) {
+            return back()->with('error', 'Failed create!');
         }
         
         return redirect()->route('category.index')
@@ -65,27 +63,16 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $this->authorize('can_do', ['edit category']);
-        $data = $this->category->find($id);
-        $dataTags = $data->tags->pluck('id')->toArray();
-        $tags = $this->tag->all();
+        $category = Category::find($id);
+        $dataTags = $category->tags->pluck('id')->toArray();
+        $tags = Tag::all();
 
-        return view('admin.category.edit', ['category' => $data, 'dataTags' => $dataTags, 'tags' => $tags]);
+        return view('admin.category.edit', compact(['category', 'dataTags', 'tags']));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'status' => 'required',
-            'tag' => 'nullable|array'
-        ]);
-        $dataUpdate = $this->category->find($id);
-        $dataUpdate->fill($data)->save();
-
-        if (isset($data['tag'])) {
-            $dataUpdate->tags()->sync(Arr::get($data, 'tag', []));
-        }
+        $this->categoryService->update($request->validated(), $category);
 
         return redirect()->route('category.index')
             ->with('message', 'Successfully updated');
@@ -94,10 +81,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $this->authorize('can_do', ['delete category']);
-        $category->tags()->detach();
-        $this->article->where('category_id', $category['id'])->delete();
-
-        $category->delete();
+        $this->categoryService->delete($category);
 
         return redirect()->route('category.index')
             ->with('message', 'Successfully deleted');

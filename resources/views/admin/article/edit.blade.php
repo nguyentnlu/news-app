@@ -36,9 +36,9 @@
                                     <label for="category" class="form-label">Category</label>
                                     <select name="category_id" id="category">
                                         @foreach ($category as $item)
-                                            <option <?php if ($article->category_id == $item->id) {
-                                                echo 'selected';
-                                            } ?> value="{{ $item->id }}">{{ $item->name }}
+                                            <option 
+                                            @if ($article->category_id == $item->id) selected @endif
+                                            value="{{ $item->id }}">{{ $item->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -62,9 +62,6 @@
         </div>
         <x-slot name="scripts">
             <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-                integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <script>
                 ClassicEditor
                     .create(document.querySelector('#content'), {})

@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
-    protected $user;
-    protected $role;
+    protected $userService;
 
     public function __construct()
     {
-        $this->user = new User();
-        $this->role = new Role();
+        $this->userService = new UserService();
+        date_default_timezone_set('asia/ho_chi_minh');
     }
     /**
      * Display a listing of the resource.
@@ -26,8 +27,8 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('can_do', ['read user']);
-        $users = $this->user->latest()->paginate(5);
-        return view('admin.user.index', ['users' => $users]);
+        $users = User::get();
+        return view('admin.user.index', compact(['users']));
     }
 
     /**
@@ -38,9 +39,9 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('can_do', ['create user']);
-        $roles = $this->role->all();
+        $roles = Role::all();
 
-        return view('admin.user.create', ['roles' => $roles]);
+        return view('admin.user.create', compact(['roles']));
     }
 
     /**
@@ -49,19 +50,12 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => ['required', 'confirmed'],
-            'status' => 'required',
-            'role' => ['required', 'array']
-        ]);
-        $data['password'] = Hash::make($request->password);
-
-        $dataAdded = $this->user->create($data);
-        $dataAdded->roles()->sync($data['role']);
+        $user = $this->userService->create($request->validated());
+        if (is_null($user)) {
+            return back()->with('error', 'Failed create!');
+        }
 
         return redirect()->route('user.index')
             ->with('message', 'Successfully created!');
@@ -87,12 +81,12 @@ class UserController extends Controller
     public function edit($id)
     {
         $this->authorize('can_do', ['edit user']);
-        $data = $this->user->find($id);
-        $dataRoles = $data->roles->pluck('id')->toArray();
+        $user = User::find($id);
+        $dataRoles = $user->roles->pluck('id')->toArray();
 
-        $roles = $this->role->all();
+        $roles = Role::all();
 
-        return view('admin.user.edit', ['user' => $data, 'roles' => $roles, 'dataRoles' => $dataRoles]);
+        return view('admin.user.edit', compact(['user', 'roles', 'dataRoles']));
     }
 
     /**
@@ -102,17 +96,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $data = $request->validate([
-            'status' => 'required',
-            'role' => ['required', 'array']
-        ]);
-
-        $this->user->find($id)->fill($data)->save();
-
-        $dataUpdate = $this->user->find($id);
-        $dataUpdate->roles()->sync($data['role']);
+        $this->userService->update($request->validated(), $user);
 
         return redirect()->route('user.index')
             ->with('message', 'Successfully updated!');
@@ -127,8 +113,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->authorize('can_do', ['delete user']);
-        $user->roles()->detach();
-        $user->delete();
+        $this->userService->delete($user);
 
         return redirect()->route('user.index')
             ->with('message', 'Successfully deleted');
@@ -136,16 +121,16 @@ class UserController extends Controller
 
     public function profile()
     {
-        $data = $this->user->find(auth()->id());
-        $dataRoles = $data->roles()->get();
+        $user = User::find(auth()->id());
+        $dataRoles = $user->roles()->get();
 
-        $roles = $this->role->all();
-        return view('admin.user.profile', ['user' => $data, 'roles' => $roles, 'dataRoles' => $dataRoles]);
+        $roles = Role::all();
+        return view('admin.user.profile', compact(['user', 'roles', 'dataRoles']));
     }
 
     public function profileSave(Request $request)
     {
-        $user = $this->user->find(auth()->id());
+        $user = User::find(auth()->id());
         $data = $request->validate([
             'name' => 'required',
             'birthday' => 'required',
@@ -166,7 +151,7 @@ class UserController extends Controller
     }
 
     public function changePassword(Request $request){
-        $user = $this->user->find(auth()->id());
+        $user = User::find(auth()->id());
         $request->validate([
             'current_password' => 'required',
             'new_password' => ['required', 'confirmed'],
@@ -176,6 +161,7 @@ class UserController extends Controller
         if (Hash::check($request->current_password, $user->password)) {
             $user->password = Hash::make($request->new_password);
             $user->save();
+            
             return redirect()->route('profile')
             ->with('message_pass', 'Successfully updated!');
         }else{

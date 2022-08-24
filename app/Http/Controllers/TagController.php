@@ -2,44 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTagRequest;
+use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\DB;
+use App\Services\TagService;
 
 class TagController extends Controller
 {
-    protected $tag;
-    protected $user;
+    protected $tagService;
 
     public function __construct()
     {
-        $this->tag = new Tag();
-        $this->user = new User();
+        $this->tagService = new TagService();
+        date_default_timezone_set('asia/ho_chi_minh');
     }
 
-    public function index(){
+    public function index()
+    {
         $this->authorize('can_do', ['read tag']);
-        $tags = $this->tag->oldest()->paginate(5);
-        return view('admin.tag.index', ['tags' => $tags]);
+        $tags = Tag::get();
+        return view('admin.tag.index', compact(['tags']));
     }
-    public function show(){}
 
-    public function create(){
+    public function show()
+    {
+        //
+    }
+
+    public function create()
+    {
         $this->authorize('can_do', ['create tag']);
 
         return view('admin.tag.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreTagRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'status' => 'required',
-        ]);
-        $this->tag->create($data);
+        $tag = $this->tagService->create($request->validated());
+        if (is_null($tag)) {
+            return back()->with('error', 'Failed create!');
+        }
 
         return redirect('/admin/tag');
     }
@@ -47,27 +49,24 @@ class TagController extends Controller
     public function edit($tag_id)
     {
         $this->authorize('can_do', ['edit tag']);
-        $data = $this->tag->find($tag_id);
+        $data = Tag::find($tag_id);
         return view('admin.tag.edit', ['tag' => $data ]);
     }
 
-    public function update(Request $request, $tag_id)
+    public function update(UpdateTagRequest $request, Tag $tag)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'status' => 'required'
-        ]);
+        $this->tagService->update($request->validated(), $tag);
 
-        $this->tag->find($tag_id)->fill($data)->save();
-
-        return redirect('/admin/tag');
+        return redirect()->route('tag.index')
+            ->with('message', 'Successfully updated');
     }
 
-    public function destroy($id)
+    public function destroy(Tag $tag)
     {
         $this->authorize('can_do', ['delete tag']);
-        $this->tag->delete($id);
-        return redirect('/admin/tag');
+        $this->tagService->delete($tag);
+        
+        return redirect()->route('tag.index')
+            ->with('message', 'Successfully deleted');
     }
 }

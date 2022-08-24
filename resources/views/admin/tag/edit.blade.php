@@ -23,12 +23,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Tag Status</label>
                                 <select value="{{$tag->status}}" name="status" id="status" >
-                                    <option <?php if ($tag->status == 0) {
-                                                echo ("selected");
-                                            } ?> value="0">disable</option>
-                                    <option <?php if ($tag->status == 1) {
-                                                echo ("selected");
-                                            } ?> value="1">enable</option>
+                                    <option value="1" @if ($tag->status == 1) selected @endif>Enable</option>
+                                    <option value="0" @if ($tag->status == 0) selected @endif>Disable</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary">Save</button>

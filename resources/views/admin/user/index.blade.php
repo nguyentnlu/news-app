@@ -12,13 +12,18 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="container-fluid pt-4 px-4">
                         <div class="row g-4">
-
                             <div class="col-12">
-                                @if(Gate::check('can_do', ['create user']))
-                                <div class="d-flex justify-content-end">
-                                    <a href="{{ route('user.create')}}" class="btn btn-primary col-2">Create</a>
+                                <div class="row">
+                                    @if(Gate::check('can_do', ['create user']))
+                                    <div class="col-sm-6 d-flex justify-content-start">
+                                        <a href="{{ route('user.create')}}" class="btn btn-primary col-2">Create</a>
+                                    </div>
+                                    @endif
+                                    <form class="col-sm-6 input-group d-flex justify-content-end">
+                                        <input type="search" name="search[title]" placeholder="Search..." />
+                                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                                    </form>
                                 </div>
-                                @endif
                                 <br />
                                 @if (session()->has('message'))
                                 <div class="alert alert-success">
@@ -26,7 +31,7 @@
                                 </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table id="table" class="table">
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
@@ -46,24 +51,23 @@
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>
-                                                    <?php
-                                                    if ($user->status == 0)
-                                                        echo "Disable";
-                                                    else
-                                                        echo "Enable";
-                                                    ?>
+                                                    @if ($user->status == 0) Disable @else Enable @endif
                                                 </td>
                                                 <td>{{$user['created_at']}}</td>
                                                 <td>{{$user['updated_at']}}</td>
                                                 <td>
-                                                    <form class="d-flex justify-content-end" action="{{ route('user.destroy', $user->id) }}" method="POST">
+                                                    <form class="d-flex justify-content-end"
+                                                        action="{{ route('user.destroy', $user->id) }}" method="POST">
                                                         @method('DELETE')
                                                         @csrf
                                                         @if(Gate::check('can_do', ['edit user']))
-                                                        <a class="btn btn-success" style="display:inline" href="{{ route('user.edit', $user->id)}}">Edit</a>|
+                                                        <a class="btn btn-success" style="display:inline"
+                                                            href="{{ route('user.edit', $user->id)}}">Edit</a>|
                                                         @endif
                                                         @if(Gate::check('can_do', ['delete user']))
-                                                        <button style="display:inline" onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-warning">Delete</button>
+                                                        <button style="display:inline"
+                                                            onclick="return confirm('Are you sure you want to delete this user?')"
+                                                            class="btn btn-warning">Delete</button>
                                                         @endif
                                                     </form>
 
@@ -82,4 +86,16 @@
         </div>
     </div>
     @endif
+    <x-slot name="scripts">
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    "pagingType": "input",
+                    paging: false,
+                    info: false,
+                    "searching": false
+                });
+            });
+        </script>
+    </x-slot>
 </x-app-layout>

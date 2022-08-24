@@ -1,10 +1,14 @@
+<div class="row">
 @foreach ($items as $item)
-<input
-    type="checkbox"
-    name="{{ $name }}"
-    id="{{ $id . $item->id }}"
-    value="{{ $item->id }}"
-    @if (in_array($item->id, $selected)) checked @endif
->
-<label for="{{ $id }}">{{ $item->name }}</label><br />
+    <div class="col-md-2">
+        <input
+            type="checkbox"
+            name="{{ $name }}"
+            id="{{ $id . $item->id }}"
+            value="{{ $item->id }}"
+            @if (in_array($item->id, $selected)) checked @endif
+        >
+        <label for="{{ $id }}">{{ $item->name }}</label><br />
+    </div>
 @endforeach
+</div>

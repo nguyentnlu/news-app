@@ -59,9 +59,6 @@ class PermissionSeeder extends Seeder
                 'name' => 'edit tag',
             ],
             [
-                'name' => 'edit account info',
-            ],
-            [
                 'name' => 'edit user',
             ],
             [

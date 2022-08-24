@@ -43,19 +43,21 @@
                                                 <td>{{ $role->name }}</td>
                                                 <td>{{ $role->created_at }}</td>
                                                 <td>{{ $role->updated_at }}</td>
-                                                <td><?php
-                                                    if ($role->status == 0)
-                                                        echo "Disable";
-                                                    else
-                                                        echo "Enable";
-                                                    ?>
-                                                    @if(Gate::check('can_do', ['edit role']))
                                                 <td>
-                                                    <div class="d-flex justify-content-end">
-                                                        <a style="display:inline" class="btn btn-success" href="{{ route('role.edit', $role->id)}}">Edit</a>
-                                                    </div>
+                                                    @if ($role->status == 0) Disable @else Enable @endif
                                                 </td>
-                                                @endif
+                                                <td>
+                                                    <form class="d-flex justify-content-end" action="{{ route('role.destroy', $role->id) }}" method="POST">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        @if(Gate::check('can_do', ['edit role']))
+                                                        <a class="btn btn-success" style="display:inline" href="{{ route('role.edit', $role->id)}}">Edit</a>|
+                                                        @endif
+                                                        @if(Gate::check('can_do', ['delete role']))
+                                                        <button style="display:inline" onclick="return confirm('Are you sure you want to delete this role?')" class="btn btn-warning">Delete</button>
+                                                        @endif
+                                                    </form>
+                                                </td>
                                             </tr>
                                             @endif
                                             @endforeach

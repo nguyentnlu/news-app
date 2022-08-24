@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\RoleService;
 
 class RoleController extends Controller
 {
-    protected $role;
-    protected $permission;
-    protected $user;
+    protected $roleService;
 
     public function __construct()
     {
-        $this->role = new Role();
-        $this->permission = new Permission();
-        $this->user = new User();
+        $this->roleService = new RoleService();
+        date_default_timezone_set('asia/ho_chi_minh');
     }
     /**
      * Display a listing of the resource.
@@ -27,9 +25,9 @@ class RoleController extends Controller
     public function index()
     {
         $this->authorize('can_do', ['read role']);
-        $roles = $this->role->all();
+        $roles = Role::get();
 
-        return view('admin.role.index', ['roles' => $roles]);
+        return view('admin.role.index', compact(['roles']));
     }
 
     /**
@@ -56,9 +54,9 @@ class RoleController extends Controller
     public function create()
     {
         $this->authorize('can_do', ['create role']);
-        $permissions = $this->permission->all();
+        $permissions = Permission::all();
 
-        return view('admin.role.create', ['permissions' => $permissions]);
+        return view('admin.role.create', compact(['permissions']));
     }
 
     /**
@@ -67,16 +65,12 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'status' => 'required',
-            'permission' => ['required', 'array'],
-        ]);
-
-        $dataAdded = $this->role->create($data);
-        $dataAdded->permissions()->sync($data['permission']);
+        $role = $this->roleService->create($request->validated());
+        if (is_null($role)) {
+            return back()->with('error', 'Failed create!');
+        }
 
         return redirect()->route('role.index')
             ->with('message', 'Successfully created');
@@ -88,10 +82,10 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function show($id)
-    // {
-    //     //
-    // }
+    public function show($id)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -102,11 +96,11 @@ class RoleController extends Controller
     public function edit($id)
     {
         $this->authorize('can_do', ['edit role']);
-        $data = $this->role->find($id);
-        $dataPermissions = $data->permissions->pluck('id')->toArray();
-        $permissions = $this->permission->all();
+        $role = Role::find($id);
+        $dataPermissions = $role->permissions->pluck('id')->toArray();
+        $permissions = Permission::all();
 
-        return view('admin.role.edit', ['role' => $data, 'dataPermissions' => $dataPermissions, 'permissions' => $permissions]);
+        return view('admin.role.edit', compact(['role', 'dataPermissions', 'permissions']));
     }
 
     /**
@@ -116,17 +110,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'status' => 'required',
-            'permission' => ['required', 'array'],
-        ]);
-
-        $dataUpdate = $this->role->find($id);
-        $dataUpdate->fill($data)->save();
-        $dataUpdate->permissions()->sync($data['permission']);
+        $this->roleService->update($request->validated(), $role);
 
         return redirect()->route('role.index')
             ->with('message', 'Successfully updated');
@@ -140,8 +126,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->permissions()->detach();
-        $role->delete();
+        $this->authorize('can_do', ['delete role']);
+        $this->roleService->delete($role);
 
         return redirect()->route('role.index')
             ->with('message', 'Successfully deleted');

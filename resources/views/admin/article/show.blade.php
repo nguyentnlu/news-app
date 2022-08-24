@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(Gate::check('can_do', ['read article']))
+    @if(Gate::check('can_do', ['enable article']) || Gate::check('article_owner', $article))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Article') }}
@@ -28,12 +28,13 @@
                     </dd>
 
                     <dt class="col-sm-4 text-truncate p-2">Status</dt>
-                    <dd class="col-sm-8 p-2"><?php
-                                                if ($article['status'] == 0)
-                                                    echo "Disable";
-                                                else
-                                                    echo "Enable";
-                                                ?></dd>
+                    <dd class="col-sm-8 p-2">
+                        @if ($article['status'] == 0)
+                            Disable
+                        @else
+                            Enable
+                        @endif
+                    </dd>
 
                     <dt class="col-sm-4 text-truncate p-2">Created by</dt>
                     <dd class="col-sm-8 p-2">{{$article -> author -> name}}</dd>
@@ -46,7 +47,7 @@
 
                     <dt class="col-sm-4 p-2">Content</dt>
                     <dd class="col-sm-8 p-2" id='textareaContent'>
-                        <?php echo $article->content ?>
+                        @php echo $article->content @endphp
                     </dd>
                     @if(Gate::check('article_owner', $article))
                     <div class="d-flex justify-content-end">

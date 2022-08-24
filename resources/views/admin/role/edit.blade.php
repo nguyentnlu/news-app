@@ -24,12 +24,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Role Status</label>
                                 <select value="{{$role->status}}" name="status" id="status" >
-                                    <option <?php if ($role->status == 1) {
-                                                echo ("selected");
-                                            } ?> value="1">Enable</option>
-                                    <option <?php if ($role->status == 0) {
-                                                echo ("selected");
-                                            } ?> value="0">Disable</option>
+                                    <option value="1" @if ($role->status == 1) selected @endif>Enable</option>
+                                    <option value="0" @if ($role->status == 0) selected @endif>Disable</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary">Save</button>

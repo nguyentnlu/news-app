@@ -11,19 +11,25 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="bg-light rounded h-100 p-4">
-                        <div class="d-flex justify-content-end">
-                            @if(Gate::check('can_do', ['create article']))
-                            <a href="{{ route('article.create')}}" class="btn btn-primary col-2">Create</a>
-                            @endif
+                        <div class="row">
+                            <div class="col-sm-6 d-flex justify-content-start">
+                                @if(Gate::check('can_do', ['create article']))
+                                <a href="{{ route('article.create')}}" class="btn btn-primary col-2">Create</a>
+                                @endif
+                            </div>
+                            <form class="col-sm-6 input-group d-flex justify-content-end">
+                                <input type="search" name="search[title]" placeholder="Search..."/>
+                                <button type="submit" class="btn btn-outline-primary">Search</button>
+                            </form>
                         </div>
-                        <br />
+                        <br/>
                         @if (session()->has('message'))
                         <div class="alert alert-success">
                             {{ session()->get('message') }}
                         </div>
                         @endif
                         <div class="table-responsive">
-                            <table class="table">
+                            <table id="table" class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">ID</th>
@@ -55,22 +61,26 @@
                                         <td>{{$article -> updated_at}}</td>
                                         @if(Gate::check('can_do', ['enable article']))
                                         <td>
-                                            <?php
-                                            if ($article->status) {
-                                                echo '<a class="btn btn-link" href="/admin/article/status/' . $article->id . '">Enable</a>';
-                                            } else {
-                                                echo '<a class="btn btn-light" href="/admin/article/status/' . $article->id . '">Disable</a>';
-                                            }
-                                            ?>
+                                            @if ($article->status)
+                                            <a class="btn btn-link"
+                                                href="/admin/article/status/{{ $article->id }}">Enable</a>
+                                            @else
+                                            <a class="btn btn-light"
+                                                href="/admin/article/status/{{ $article->id }}">Disable</a>
+                                            @endif
                                         </td>
                                         @endif
                                         <td>
-                                            <form class="d-flex justify-content-end" action="{{ route('article.destroy', $article->id) }}" method="POST">
+                                            <form class="d-flex justify-content-end"
+                                                action="{{ route('article.destroy', $article->id) }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf
-                                                <a class="btn btn-info" style="display:inline" href="{{ route('article.show', $article->id)}}">Show</a>
-                                                @if(Gate::check('can_do', ['enable article']))
-                                                |<button style="display:inline" onclick="return confirm('Are you sure you want to delete this article?')" class="btn btn-warning delete">Delete</button>
+                                                <a class="btn btn-info" style="display:inline"
+                                                    href="{{ route('article.show', $article->id)}}">Show</a>
+                                                @if(Gate::check('can_do', ['delete article']))
+                                                |<button style="display:inline"
+                                                    onclick="return confirm('Are you sure you want to delete this article?')"
+                                                    class="btn btn-warning delete">Delete</button>
                                                 @endif
                                             </form>
 
@@ -81,13 +91,22 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="py-8">
-                            {{ $articles->appends(request()->query())->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     @endif
+    <x-slot name="scripts">
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    "pagingType": "input",
+                    paging: false,
+                    info: false,
+                    "searching": false
+                });
+            });
+        </script>
+    </x-slot>
 </x-app-layout>

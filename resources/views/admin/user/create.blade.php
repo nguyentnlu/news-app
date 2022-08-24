@@ -32,8 +32,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">User Status</label>
                                 <select name="status" id="status" >
-                                    <option value="1">enable</option>
-                                    <option value="0">disable</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary">Create</button>

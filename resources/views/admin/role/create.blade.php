@@ -23,8 +23,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Role Status</label>
                                 <select id="status" name="status" >
-                                    <option value="1">enable</option>
-                                    <option value="0">disable</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary">Create</button>

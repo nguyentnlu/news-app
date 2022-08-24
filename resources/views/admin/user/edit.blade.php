@@ -15,19 +15,19 @@
                             @method('PUT')
                             @csrf
                             <div class="mb-3">
-                                <x-forms.input label="Name" name="name" id="name" value="{{ $user->name }}"/>
+                                <x-forms.input readonly label="Name" name="name" id="name" value="{{ $user->name }}"/>
                             </div>
                             <div class="mb-3">
-                                <x-forms.input label="Email" name="email" id="email" value="{{ $user->email }}"/>
+                                <x-forms.input readonly label="Email" name="email" id="email" value="{{ $user->email }}"/>
                                 </div>
                             <div class="mb-3">
-                                <x-forms.input label="Birthday" name="name" id="name" value="{{ $user->name }}" type="date"/>
+                                <x-forms.input readonly label="Birthday" name="name" id="name" value="{{ $user->name }}" type="date"/>
                             </div>
                             <div class="mb-3">
-                                <x-forms.input label="Phone" name="phone" id="phone" value="{{ $user->phone }}"/>
+                                <x-forms.input readonly label="Phone" name="phone" id="phone" value="{{ $user->phone }}"/>
                             </div>
                             <div class="mb-3">
-                                <x-forms.input label="Address" name="address" id="address" value="{{ $user->address }}"/>
+                                <x-forms.input readonly label="Address" name="address" id="address" value="{{ $user->address }}"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Roles</label><br>
@@ -36,12 +36,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">User Status</label>
                                 <select value="{{$user->status}}" name="status" id="status" >
-                                    <option <?php if ($user->status == 0) {
-                                                echo ("selected");
-                                            } ?> value="0">disable</option>
-                                    <option <?php if ($user->status == 1) {
-                                                echo ("selected");
-                                            } ?> value="1">enable</option>
+                                    <option value="1" @if ($user->status == 1) selected @endif>Enable</option>
+                                    <option value="0" @if ($user->status == 0) selected @endif>Disable</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary">Save</button>
