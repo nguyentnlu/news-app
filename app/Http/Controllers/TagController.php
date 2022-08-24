@@ -6,6 +6,8 @@ use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
 use App\Services\TagService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class TagController extends Controller
 {
@@ -17,10 +19,17 @@ class TagController extends Controller
         date_default_timezone_set('asia/ho_chi_minh');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('can_do', ['read tag']);
-        $tags = Tag::get();
+        $tags = Tag::latest()->paginate(5);
+
+        //search
+        $filter = $request->query();
+        if (Arr::has($filter, 'search')) {
+            $tags = $this->tagService->search($filter);
+        }
+
         return view('admin.tag.index', compact(['tags']));
     }
 

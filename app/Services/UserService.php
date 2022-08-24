@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -58,5 +60,14 @@ class UserService
     {
         $user->roles()->detach();
         $user->delete();
+    }
+
+    public function search($filter)
+    {
+        foreach (Arr::get($filter, 'search') as $column => $value) {
+            $users = User::where($column, 'like', "%{$value}%")->get();
+        }
+
+        return $users;
     }
 }

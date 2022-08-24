@@ -12,16 +12,15 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="container-fluid pt-4 px-4">
                         <div class="row g-4">
-
                             <div class="col-12">
                                 <div class="row">
                                     @if(Gate::check('can_do', ['create category']))
                                     <div class="col-sm-6 d-flex justify-content-start">
-                                        <a href="{{ route('category.create')}}" class="btn btn-primary col-2">Create</a>
+                                        <a href="{{ route('category.create') }}" class="btn btn-primary col-2">Create</a>
                                     </div>
                                     @endif
                                     <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search[title]" placeholder="Search..." />
+                                        <input type="search" name="search[name]" placeholder="Search..." />
                                         <button type="submit" class="btn btn-outline-primary">Search</button>
                                     </form>
                                 </div>
@@ -82,6 +81,9 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="py-8">
+                                    {{ $categories->appends(request()->query())->links() }}
                                 </div>
                             </div>
                         </div>

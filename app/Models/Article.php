@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\Trait\HasSearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSearch;
 
     const ENABLE_STATUS = true;
     const DISABLE_STATUS = false;

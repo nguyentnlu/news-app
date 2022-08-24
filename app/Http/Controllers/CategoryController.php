@@ -15,23 +15,21 @@ class CategoryController extends Controller
 {
     protected $categoryService;
 
-    public function __construct()
+    public function __construct(CategoryService $categoryService)
     {
-        $this->categoryService = new CategoryService();
+        $this->categoryService = $categoryService;
         date_default_timezone_set('asia/ho_chi_minh');
     }
 
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read category']);
-        $categories = Category::get();
+        $categories = Category::latest()->paginate(5);
         
         //search
         $filter = $request->query();
         if (Arr::has($filter, 'search')) {
-            foreach (Arr::get($filter, 'search') as $column => $value) {
-                $articles = Category::where($column, 'like', "%{$value}%")->get();
-            }
+            $categories = $this->categoryService->search($filter);
         }
 
         return view('admin.category.index', compact(['categories']));

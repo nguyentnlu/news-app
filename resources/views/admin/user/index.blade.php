@@ -20,7 +20,7 @@
                                     </div>
                                     @endif
                                     <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search[title]" placeholder="Search..." />
+                                        <input type="search" name="search[name]" placeholder="Search..." />
                                         <button type="submit" class="btn btn-outline-primary">Search</button>
                                     </form>
                                 </div>
@@ -77,6 +77,9 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="py-8">
+                                    {{ $users->appends(request()->query())->links() }}
                                 </div>
                             </div>
                         </div>

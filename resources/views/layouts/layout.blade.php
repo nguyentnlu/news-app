@@ -15,7 +15,7 @@
     <link href="{{ asset('frontend/css/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('frontend/css/owl.theme.default.css') }}" rel="stylesheet" type="text/css" />
     <!-- Bootstrap CSS -->
-    <link href="{{ asset('frontend/css/style_1.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet" type="text/css" />
     <!-- Modernizr JS -->
     <script src="{{ asset('frontend/js/modernizr-3.5.0.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"

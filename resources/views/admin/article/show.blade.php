@@ -23,7 +23,7 @@
                     <dt class="col-sm-4 p-2">Tags</dt>
                     <dd class="col-sm-8 p-2">
                         @foreach($dataTags as $tag)
-                        <p><i class="bi bi-tags-fill"></i> {{$tag->name}}</p>
+                        <p><i class="fa fa-tags" aria-hidden="true"></i> {{$tag->name}}</p>
                         @endforeach
                     </dd>
 

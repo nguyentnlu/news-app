@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Tag;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -51,5 +52,14 @@ class TagService{
     public function delete(Tag $tag)
     {
         $tag->delete();
+    }
+
+    public function search($filter)
+    {
+        foreach (Arr::get($filter, 'search') as $column => $value) {
+            $tags = Tag::where($column, 'like', "%{$value}%")->get();
+        }
+
+        return $tags;
     }
 }

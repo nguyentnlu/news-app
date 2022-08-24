@@ -14,7 +14,7 @@ class ArticleController extends Controller
     {
         $categories = $this->categoryList();
         $category = Category::find($id);
-        $articles = Article::where('category_id', $id)->get();
+        $articles = Article::where('category_id', $id)->latest()->get();
         $tags = $category->tags()->where('status', Article::ENABLE_STATUS)->get();
 
         return view('pages.article.index', compact(['articles', 'categories', 'tags', 'category']));

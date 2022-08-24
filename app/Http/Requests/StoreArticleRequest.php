@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,7 +28,7 @@ class StoreArticleRequest extends FormRequest
         return [
             'title' => 'required|unique:articles|max:255',
             'content' => 'required',
-            'slug' => 'required',
+            'slug' => 'required|unique:articles',
             'url' => ['required', 'file', 'max:512'],
             'category_id' => 'required',
             'tag' => 'nullable|array',

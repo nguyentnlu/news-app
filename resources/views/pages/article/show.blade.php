@@ -2,11 +2,14 @@
 @section('content')
 <div id="fh5co-single-content" class="container-fluid pb-4 pt-4 paddding">
     <div class="container paddding">
+        <h5><i class="fa fa-list-alt" aria-hidden="true"></i><b> {{ $article->category->name }}</b></h5><br/>
         <h1>{{ $article->title }}</h1><br />
-        <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" width="1100px">
+        <p><i>{{ $article->author->name }}</i></p>
+        <p><i>{{ $article->created_at }}</i></p>
+        <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" width="1020px">
         <br /><br />
         <div class="row mx-0">
-            <div class="col-md-8 animate-box" data-animate-effect="fadeInLeft">
+            <div class="col-md-8 animate-box content-detail" data-animate-effect="fadeInLeft">
                 <br />
                 @php echo $article->content @endphp
             </div>

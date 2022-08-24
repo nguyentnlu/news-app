@@ -9,32 +9,24 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class ArticleController extends Controller
 {
     protected $articleService;
 
-    public function __construct()
+    public function __construct(ArticleService $articleService)
     {
-        $this->articleService = new ArticleService();
+        $this->articleService = $articleService;
         date_default_timezone_set('asia/ho_chi_minh');
     }
 
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read article']);
-        $articles = Article::with(['author', 'category'])->get();
-
-        //search
         $filter = $request->query();
-        if (Arr::has($filter, 'search')) {
-            foreach (Arr::get($filter, 'search') as $column => $value) {
-                $articles = Article::where($column, 'like', "%{$value}%")->get();
-            }
-        }
+        $articles = $this->articleService->getList($filter);
 
-        return view('admin.article.index', compact('articles'));
+        return view('admin.article.index', compact('articles'))->with('search', $filter['search'] ?? '');
     }
 
     public function show($id)

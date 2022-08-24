@@ -5,22 +5,25 @@
         <div class="row mx-0">
             <div class="col-md-8 animate-box" data-animate-effect="fadeInLeft">
                 <div>
-                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">{{ $category->name ?? $tag->name }}</div>
+                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">{{ $category->name ?? $tag->name }}
+                    </div>
                 </div>
                 @foreach ($articles as $article)
                 <div class="row pb-4">
                     <div class="col-md-5">
                         <div class="fh5co_hover_news_img">
-                            <div class="fh5co_news_img"><img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" /></div>
-                            <div></div>
+                            <div class="fh5co_news_img">
+                                <img src="{{ asset('storage/'.$article->url) }}"
+                                    alt="{{ $article->url }}" />
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-7 animate-box">
                         <a href="/article/{{ $article->id }}" class="fh5co_magna py-2">{{ $article->title }}</a>
-                        <div class="fh5co_consectetur"> 
+                        <div class="fh5co_consectetur">
                             {{ $article->author->name }}
                         </div>
-                        <div class="fh5co_consectetur"> 
+                        <div class="fh5co_consectetur">
                             {{ $article->created_at }}
                         </div>
                     </div>

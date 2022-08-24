@@ -18,7 +18,7 @@
                                 @endif
                             </div>
                             <form class="col-sm-6 input-group d-flex justify-content-end">
-                                <input type="search" name="search[title]" placeholder="Search..."/>
+                                <input type="search" name="search" placeholder="Search..." value="{{ $search ?? '' }}"/>
                                 <button type="submit" class="btn btn-outline-primary">Search</button>
                             </form>
                         </div>
@@ -49,16 +49,15 @@
                                     @foreach($articles as $article)
                                     @if(Gate::check('article_owner', $article) || Gate::check('can_do', ['enable article']))
                                     <tr>
-                                        <td>{{$article -> id}}</td>
-                                        <td>{{$article -> title}}</td>
+                                        <td>{{$article->id}}</td>
+                                        <td>{{$article->title}}</td>
                                         <td>
                                             <img width="180px" src="{{ asset('storage/'.$article->url) }}" />
                                         </td>
-                                        <td>{{$article -> category -> name}}
-                                        </td>
-                                        <td>{{$article -> author -> name}}</td>
-                                        <td>{{$article -> created_at}}</td>
-                                        <td>{{$article -> updated_at}}</td>
+                                        <td>{{$article->category_name}}</td>
+                                        <td>{{$article->author_name}}</td>
+                                        <td>{{$article->created_at}}</td>
+                                        <td>{{$article->updated_at}}</td>
                                         @if(Gate::check('can_do', ['enable article']))
                                         <td>
                                             @if ($article->status)
@@ -90,6 +89,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="py-8">
+                            {{ $articles->appends(request()->query())->links() }}
                         </div>
                     </div>
                 </div>

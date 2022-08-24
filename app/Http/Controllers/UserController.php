@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserService;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -24,10 +25,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('can_do', ['read user']);
-        $users = User::get();
+        $users = User::latest()->paginate(5);
+
+        //search
+        $filter = $request->query();
+        if (Arr::has($filter, 'search')) {
+            $users = $this->userService->search($filter);
+        }
+
         return view('admin.user.index', compact(['users']));
     }
 

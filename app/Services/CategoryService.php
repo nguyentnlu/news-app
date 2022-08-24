@@ -62,4 +62,13 @@ class CategoryService
         $category->tags()->detach();
         $category->delete();
     }
+
+    public function search($filter)
+    {
+        foreach (Arr::get($filter, 'search') as $column => $value) {
+            $categories = Category::where($column, 'like', "%{$value}%")->get();
+        }
+
+        return $categories;
+    }
 }
