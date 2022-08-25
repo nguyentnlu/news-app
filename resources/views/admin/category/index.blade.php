@@ -20,7 +20,7 @@
                                     </div>
                                     @endif
                                     <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search[name]" placeholder="Search..." />
+                                        <input type="search" name="search" placeholder="Search..." />
                                         <button type="submit" class="btn btn-outline-primary">Search</button>
                                     </form>
                                 </div>

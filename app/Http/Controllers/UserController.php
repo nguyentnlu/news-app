@@ -10,14 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserService;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
     protected $userService;
 
-    public function __construct()
+    public function __construct(UserService $userService)
     {
-        $this->userService = new UserService();
+        $this->userService = $userService;
         date_default_timezone_set('asia/ho_chi_minh');
     }
     /**
@@ -28,13 +29,13 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read user']);
-        $users = User::latest()->paginate(5);
+        // $filter = $request->query();
+        // $users = $this->userService->getList($filter);
 
-        //search
-        $filter = $request->query();
-        if (Arr::has($filter, 'search')) {
-            $users = $this->userService->search($filter);
-        }
+        $filter = [
+            ...$request->query(),
+        ];
+        $users = $this->userService->getList($filter);
 
         return view('admin.user.index', compact(['users']));
     }
@@ -146,19 +147,20 @@ class UserController extends Controller
             'address' => 'required',
             'password' => 'required',
         ]);
-        
+
         if (Hash::check($data['password'], $user->password)) {
             $data['password'] = $user->password;
             $user->fill($data)->save();
             return redirect()->route('profile')
-            ->with('message', 'Successfully updated!');
-        }else{
+                ->with('message', 'Successfully updated!');
+        } else {
             return redirect()->route('profile')
-            ->with('error', 'Incorrect password!');
+                ->with('error', 'Incorrect password!');
         }
     }
 
-    public function changePassword(Request $request){
+    public function changePassword(Request $request)
+    {
         $user = User::find(auth()->id());
         $request->validate([
             'current_password' => 'required',
@@ -169,12 +171,12 @@ class UserController extends Controller
         if (Hash::check($request->current_password, $user->password)) {
             $user->password = Hash::make($request->new_password);
             $user->save();
-            
+
             return redirect()->route('profile')
-            ->with('message_pass', 'Successfully updated!');
-        }else{
+                ->with('message_pass', 'Successfully updated!');
+        } else {
             return redirect()->route('profile')
-            ->with('error_pass', 'Incorrect password!');
+                ->with('error_pass', 'Incorrect password!');
         }
     }
 }

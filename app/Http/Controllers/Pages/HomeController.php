@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = $this->categoryList();
-        $articles = Article::latest()->limit(8)->get();
+        $articles = Article::latest()->limit(3)->get();
 
         return view('pages.home.index', compact(['articles', 'categories']));
     }

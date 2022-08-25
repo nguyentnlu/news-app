@@ -20,7 +20,7 @@
                                     </div>
                                     @endif
                                     <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search[name]" placeholder="Search..." />
+                                        <input type="search" name="search" placeholder="Search..." />
                                         <button type="submit" class="btn btn-outline-primary">Search</button>
                                     </form>
                                 </div>
@@ -37,6 +37,8 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Email</th>
+                                                <th scope="col">Birthday</th>
+                                                <th scope="col">Phone</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Created at</th>
                                                 <th scope="col">Updated at</th>
@@ -50,6 +52,8 @@
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
+                                                <td>{{ $user->birthday }}</td>
+                                                <td>{{ $user->phone }}</td>
                                                 <td>
                                                     @if ($user->status == 0) Disable @else Enable @endif
                                                 </td>

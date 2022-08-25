@@ -107,13 +107,4 @@ class ArticleService
         $article->tags()->detach();
         $article->delete();
     }
-
-    public function search($filter)
-    {
-        foreach (Arr::get($filter, 'search') as $column => $value) {
-            $articles = Article::where($column, 'like', "%{$value}%")->get();
-        }
-
-        return $articles;
-    }
 }

@@ -19,7 +19,7 @@
                                         <a href="{{ route('tag.create')}}" class="btn btn-primary col-2">Create</a>
                                     </div>
                                     <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search[name]" placeholder="Search..." />
+                                        <input type="search" name="search" placeholder="Search..." />
                                         <button type="submit" class="btn btn-outline-primary">Search</button>
                                     </form>
                                 </div>

@@ -13,10 +13,17 @@ class UserService
 {
     protected $user;
 
-    public function __construct()
+    public function __construct(User $user)
     {
-        $this->user = new User();
+        $this->user = $user;
         date_default_timezone_set('asia/ho_chi_minh');
+    }
+
+    public function getList(array $filter = [])
+    {
+        $query = $this->user->query()->latest();
+        
+        return $query->searchAll($filter, ['name', 'email', 'phone'])->latest()->paginate(10);
     }
 
     public function create($data)
@@ -62,12 +69,12 @@ class UserService
         $user->delete();
     }
 
-    public function search($filter)
-    {
-        foreach (Arr::get($filter, 'search') as $column => $value) {
-            $users = User::where($column, 'like', "%{$value}%")->get();
-        }
+    // public function search($filter)
+    // {
+    //     foreach (Arr::get($filter, 'search') as $column => $value) {
+    //         $users = User::where($column, 'like', "%{$value}%")->get();
+    //     }
 
-        return $users;
-    }
+    //     return $users;
+    // }
 }

@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -24,13 +25,11 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read category']);
-        $categories = Category::latest()->paginate(5);
         
-        //search
-        $filter = $request->query();
-        if (Arr::has($filter, 'search')) {
-            $categories = $this->categoryService->search($filter);
-        }
+        $filter = [
+            ...$request->query(),
+        ];
+        $categories = $this->categoryService->getList($filter);
 
         return view('admin.category.index', compact(['categories']));
     }

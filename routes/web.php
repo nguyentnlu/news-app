@@ -52,8 +52,8 @@ Route::get('/admin/article/status/{id}', [ArticleController::class, 'setStatus']
 //Public pages
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/article/{id}', [PagesArticleController::class, 'show']);
-Route::get('/category/{id}', [PagesArticleController::class, 'index']);
-Route::get('/tag/{id}', [PagesArticleController::class, 'articleForTag']);
+Route::get('/article/{slug}', [PagesArticleController::class, 'show']);
+Route::get('/category/{slug}', [PagesArticleController::class, 'index']);
+Route::get('/tag/{slug}', [PagesArticleController::class, 'articleForTag']);
 Route::post('/search', [PagesArticleController::class, 'search']);
 Route::get('/tag', [PagesArticleController::class, 'tag']);

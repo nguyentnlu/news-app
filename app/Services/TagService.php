@@ -16,6 +16,13 @@ class TagService{
         date_default_timezone_set('asia/ho_chi_minh');
     }
 
+    public function getList(array $filter = [])
+    {
+        $query = $this->tag->query()->latest();
+        
+        return $query->searchAll($filter, ['name', 'slug'])->latest()->paginate(10);
+    }
+
     public function create($data)
     {
         DB::beginTransaction();
@@ -52,14 +59,5 @@ class TagService{
     public function delete(Tag $tag)
     {
         $tag->delete();
-    }
-
-    public function search($filter)
-    {
-        foreach (Arr::get($filter, 'search') as $column => $value) {
-            $tags = Tag::where($column, 'like', "%{$value}%")->get();
-        }
-
-        return $tags;
     }
 }

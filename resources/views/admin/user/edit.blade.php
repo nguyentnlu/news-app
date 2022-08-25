@@ -21,13 +21,13 @@
                                 <x-forms.input readonly label="Email" name="email" id="email" value="{{ $user->email }}"/>
                                 </div>
                             <div class="mb-3">
-                                <x-forms.input readonly label="Birthday" name="name" id="name" value="{{ $user->name }}" type="date"/>
+                                <x-forms.input label="Birthday" name="birthday" id="birthday" value="{{ $user->birthday }}" type="date"/>
                             </div>
                             <div class="mb-3">
-                                <x-forms.input readonly label="Phone" name="phone" id="phone" value="{{ $user->phone }}"/>
+                                <x-forms.input label="Phone" name="phone" id="phone" value="{{ $user->phone }}"/>
                             </div>
                             <div class="mb-3">
-                                <x-forms.input readonly label="Address" name="address" id="address" value="{{ $user->address }}"/>
+                                <x-forms.input label="Address" name="address" id="address" value="{{ $user->address }}"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Roles</label><br>

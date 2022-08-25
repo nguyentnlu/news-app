@@ -92,7 +92,7 @@
                                         class="sr-only">(current)</span></a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink_1">
                                     @foreach ($categories as $category)
-                                    <a class="dropdown-item" href="/category/{{ $category->id }}">{{ $category->name }}</a>
+                                    <a class="dropdown-item" href="/category/{{ $category->slug }}">{{ $category->name }}</a>
                                     @endforeach
                                 </div>
                             </li>
@@ -108,7 +108,7 @@
                     <div class="col-sm-4">
                         <form action="/search" class="input-group" method="POST">
                             @csrf
-                            <input type="search" name="search" class="form-control" />
+                            <input type="search" name="search" value="{{ $keyword ?? '' }}" class="form-control"/>
                             <button type="submit" class="btn btn-primary"><i class="fa fa-search"
                                     aria-hidden="true"></i></button>
                         </form>

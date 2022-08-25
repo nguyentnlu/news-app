@@ -5,7 +5,7 @@
         <div class="row mx-0">
             <div class="col-md-8 animate-box" data-animate-effect="fadeInLeft">
                 <div>
-                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">{{ $category->name ?? $tag->name }}
+                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">{{ $category->name ?? $tag->name ?? $keyword }}
                     </div>
                 </div>
                 @foreach ($articles as $article)
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="col-md-7 animate-box">
-                        <a href="/article/{{ $article->id }}" class="fh5co_magna py-2">{{ $article->title }}</a>
+                        <a href="/article/{{ $article->slug }}" class="fh5co_magna py-2">{{ $article->title }}</a>
                         <div class="fh5co_consectetur">
                             {{ $article->author->name }}
                         </div>
@@ -38,7 +38,7 @@
                 <div class="clearfix"></div>
                 <div class="fh5co_tags_all">
                     @foreach ($tags as $tag)
-                    <a href="/tag/{{ $tag->id }}" class="fh5co_tagg">{{ $tag->name }}</a>
+                        <a href="/tag/{{ $tag->slug }}" class="fh5co_tagg">{{ $tag->name }}</a>
                     @endforeach
                 </div>
             </div>

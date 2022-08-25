@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Services\TagService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 
 class TagController extends Controller
 {
@@ -22,13 +23,11 @@ class TagController extends Controller
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read tag']);
-        $tags = Tag::latest()->paginate(5);
 
-        //search
-        $filter = $request->query();
-        if (Arr::has($filter, 'search')) {
-            $tags = $this->tagService->search($filter);
-        }
+        $filter = [
+            ...$request->query(),
+        ];
+        $tags = $this->tagService->getList($filter);
 
         return view('admin.tag.index', compact(['tags']));
     }

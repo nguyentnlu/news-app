@@ -1156,3 +1156,7 @@ a:hover {
 .content-detail img{
     width: 700px !important;
 }
+
+.slide{
+    width: 60% !important;
+}
