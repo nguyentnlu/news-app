@@ -22,8 +22,8 @@ class UserService
     public function getList(array $filter = [])
     {
         $query = $this->user->query()->latest();
-        
-        return $query->searchAll($filter, ['name', 'email', 'phone'])->latest()->paginate(10);
+
+        return $query->search($filter, ['name', 'email', 'phone', 'birthday', 'address'])->latest()->paginate(10);
     }
 
     public function create($data)
@@ -68,13 +68,4 @@ class UserService
         $user->roles()->detach();
         $user->delete();
     }
-
-    // public function search($filter)
-    // {
-    //     foreach (Arr::get($filter, 'search') as $column => $value) {
-    //         $users = User::where($column, 'like', "%{$value}%")->get();
-    //     }
-
-    //     return $users;
-    // }
 }

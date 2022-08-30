@@ -1149,14 +1149,19 @@ a:hover {
 
 /*# sourceMappingURL=style_1.css.map */
 
-.searchText{
+.searchText {
     font-size: 14px;
 }
 
-.content-detail img{
+.content-detail img {
     width: 700px !important;
 }
 
-.slide{
-    width: 60% !important;
+.format-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
 }

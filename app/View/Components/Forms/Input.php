@@ -21,7 +21,7 @@ class Input extends Component
         $name, 
         $label = null, 
         $required = false, 
-        $value =null, 
+        $value = null, 
         $id = null, 
         $type = 'text'
     ) {

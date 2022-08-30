@@ -29,12 +29,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read user']);
-        // $filter = $request->query();
-        // $users = $this->userService->getList($filter);
 
-        $filter = [
-            ...$request->query(),
-        ];
+        $filter = $request->query();
         $users = $this->userService->getList($filter);
 
         return view('admin.user.index', compact(['users']));

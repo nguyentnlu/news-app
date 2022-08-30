@@ -21,7 +21,7 @@ class CategoryService
     {
         $query = $this->category->query()->latest();
         
-        return $query->searchAll($filter, ['name'])->latest()->paginate(10);
+        return $query->search($filter, ['name'])->latest()->paginate(10);
     }
 
     public function create($data)

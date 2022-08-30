@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+use App\Support\Trait\HasFilter;
+use App\Support\Trait\HasPagination;
 use App\Support\Trait\HasSearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
-    use HasFactory, HasSearch;
+    use HasFactory, 
+        HasSearch, 
+        SoftDeletes, 
+        HasPagination, 
+        HasFilter;
 
-    const ENABLE_STATUS = true;
-    const DISABLE_STATUS = false;
+    public const ENABLE_STATUS = true;
+    public const DISABLE_STATUS = false;
 
     protected $fillable = [
         'title',
@@ -24,27 +30,18 @@ class Article extends Model
         'created_by',
     ];
 
-    public function getImageUrlAttribute()
-    {
-        $value = $this->attributes['url'];
-
-        if (preg_match('/^http(s)*\:\/\/[a-zA-Z0-9\-_\.]+\//i', $value)) {
-            return $value;
-        }
-
-        return Storage::url($value);
-    }
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function author(){
+    public function author()
+    {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_id');
     }
-
 }

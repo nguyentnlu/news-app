@@ -24,9 +24,7 @@ class TagController extends Controller
     {
         $this->authorize('can_do', ['read tag']);
 
-        $filter = [
-            ...$request->query(),
-        ];
+        $filter = $request->query();
         $tags = $this->tagService->getList($filter);
 
         return view('admin.tag.index', compact(['tags']));

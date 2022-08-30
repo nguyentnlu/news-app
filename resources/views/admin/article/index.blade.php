@@ -17,10 +17,8 @@
                                 <a href="{{ route('article.create')}}" class="btn btn-primary col-2">Create</a>
                                 @endif
                             </div>
-                            <form class="col-sm-6 input-group d-flex justify-content-end">
-                                <input type="search" name="search" placeholder="Search..." value="{{ $search ?? '' }}"/>
-                                <button type="submit" class="btn btn-outline-primary">Search</button>
-                            </form>
+                            <x-forms.search value="{{ $search ?? '' }}" />
+
                         </div>
                         <br/>
                         @if (session()->has('message'))
@@ -47,7 +45,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach($articles as $article)
-                                    @if(Gate::check('article_owner', $article) || Gate::check('can_do', ['enable article']))
                                     <tr>
                                         <td>{{$article->id}}</td>
                                         <td>{{$article->title}}</td>
@@ -62,10 +59,10 @@
                                         <td>
                                             @if ($article->status)
                                             <a class="btn btn-link"
-                                                href="/admin/article/status/{{ $article->id }}">Enable</a>
+                                                href="{{ route('article.status', $article->id) }}">Enable</a>
                                             @else
                                             <a class="btn btn-light"
-                                                href="/admin/article/status/{{ $article->id }}">Disable</a>
+                                                href="{{ route('article.status', $article->id) }}">Disable</a>
                                             @endif
                                         </td>
                                         @endif
@@ -85,13 +82,12 @@
 
                                         </td>
                                     </tr>
-                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <div class="py-8">
-                            {{ $articles->appends(request()->query())->links() }}
+                            {{ $articles->links() }}
                         </div>
                     </div>
                 </div>

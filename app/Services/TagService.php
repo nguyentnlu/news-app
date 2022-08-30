@@ -2,7 +2,6 @@
 namespace App\Services;
 
 use App\Models\Tag;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -20,7 +19,7 @@ class TagService{
     {
         $query = $this->tag->query()->latest();
         
-        return $query->searchAll($filter, ['name', 'slug'])->latest()->paginate(10);
+        return $query->search($filter, ['name', 'slug'])->latest()->paginate(10);
     }
 
     public function create($data)

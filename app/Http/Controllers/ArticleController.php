@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -23,7 +24,22 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $this->authorize('can_do', ['read article']);
-        $filter = $request->query();
+        if (Gate::check('can_do', ['enable article'])) {
+            $filter = [
+                ...$request->query(),
+                'paginate' => 10,
+            ];
+        } else {
+            $filter = [
+                ...$request->query(),
+                'filter' => [
+                    ...$request->query('filter', []),
+                    'created_by' => auth()->id(),
+                ],
+                'paginate' => 10,
+
+            ];
+        }
         $articles = $this->articleService->getList($filter);
 
         return view('admin.article.index', compact('articles'))->with('search', $filter['search'] ?? '');

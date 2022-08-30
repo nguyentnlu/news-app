@@ -5,7 +5,8 @@
         <div class="row mx-0">
             <div class="col-md-8 animate-box" data-animate-effect="fadeInLeft">
                 <div>
-                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">{{ $category->name ?? $tag->name ?? $keyword }}
+                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">
+                        {{ $category->name ?? $tag->name ?? $search }}
                     </div>
                 </div>
                 @foreach ($articles as $article)
@@ -19,7 +20,14 @@
                         </div>
                     </div>
                     <div class="col-md-7 animate-box">
-                        <a href="/article/{{ $article->slug }}" class="fh5co_magna py-2">{{ $article->title }}</a>
+                        <div class="fh5co_consectetur">
+                            {{ $article->category->name }}
+                        </div>
+                        <a href="{{ route('public.article.show', $article->slug) }}" 
+                            class="fh5co_magna py-2 format-title" 
+                            style="height: 58px;">
+                            {{ $article->title }}
+                        </a>
                         <div class="fh5co_consectetur">
                             {{ $article->author->name }}
                         </div>
@@ -29,19 +37,12 @@
                     </div>
                 </div>
                 @endforeach
+                <div class="py-8">
+                    {{ $articles->links('vendor.pagination.bootstrap-4') }}
+                </div>
             </div>
             @if (isset($tags))
-            <div class="col-md-3 animate-box" data-animate-effect="fadeInRight">
-                <div>
-                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">Tags</div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="fh5co_tags_all">
-                    @foreach ($tags as $tag)
-                        <a href="/tag/{{ $tag->slug }}" class="fh5co_tagg">{{ $tag->name }}</a>
-                    @endforeach
-                </div>
-            </div>
+            <x-public.tag-box :items="$tags" />
             @endif
         </div>
     </div>

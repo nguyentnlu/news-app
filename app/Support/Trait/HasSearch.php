@@ -3,16 +3,21 @@
 namespace App\Support\Trait;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 trait HasSearch
 {
-    public function scopeSearch(Builder $query, $value, array $columns)
+    public function scopeSearch(Builder $query, $filter, array $columns)
     {
-        $query->where(function ($query) use ($columns, $value) {
-            foreach($columns as $column) {
-                $query->orWhere($column, 'like', "%{$value}%");
-            }
-        });
+        if (Arr::has($filter, 'search')) {
+            $value = Arr::get($filter, 'search');
+
+            $query->where(function ($query) use ($columns, $value) {
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'like', "%{$value}%");
+                }
+            });
+        }
 
         return $query;
     }

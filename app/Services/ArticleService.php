@@ -24,15 +24,11 @@ class ArticleService
         $articleTable = $this->article->getTable();
         $query = $this->article->join('categories as c', 'c.id', '=', "{$articleTable}.category_id")
             ->join('users as u', 'u.id', '=', "{$articleTable}.created_by")
-            ->select("{$articleTable}.*", 'c.name as category_name', 'u.name as author_name');
-
-        if (Arr::has($filter, 'search')) {
-            $query->search(Arr::get($filter, 'search'), [
-                'title', 'c.name', 'u.name'
-            ]);
-        }
-
-        return $query->paginate(10);
+            ->select("{$articleTable}.*", 'c.name as category_name', 'u.name as author_name')
+            ->filter($filter)
+            ->search($filter, ['title', 'c.name', 'u.name']);
+        
+        return $query->getWithPaginate($filter);
     }
 
     public function create($data)

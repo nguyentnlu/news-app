@@ -26,8 +26,8 @@ class StoreTagRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'slug' => 'required|unique:roles',
-            'status' => 'required',
+            'slug' => 'required|unique:tags',
+            'status' => 'nullable',
         ];
     }
 }

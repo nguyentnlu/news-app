@@ -18,7 +18,7 @@
                     <dd class="col-sm-8 p-2"><img src="{{ asset('storage/'.$article->url) }}" /></dd>
 
                     <dt class="col-sm-4 text-truncate p-2">Category</dt>
-                    <dd class="col-sm-8 p-2">{{$article -> category -> name}}</dd>
+                    <dd class="col-sm-8 p-2">{{$article->category->name}}</dd>
 
                     <dt class="col-sm-4 p-2">Tags</dt>
                     <dd class="col-sm-8 p-2">
@@ -37,17 +37,17 @@
                     </dd>
 
                     <dt class="col-sm-4 text-truncate p-2">Created by</dt>
-                    <dd class="col-sm-8 p-2">{{$article -> author -> name}}</dd>
+                    <dd class="col-sm-8 p-2">{{$article->author->name}}</dd>
 
                     <dt class="col-sm-4 text-truncate p-2">Created at</dt>
-                    <dd class="col-sm-8 p-2">{{$article -> created_at}}</dd>
+                    <dd class="col-sm-8 p-2">{{$article->created_at}}</dd>
 
                     <dt class="col-sm-4 p-2">Updated at</dt>
-                    <dd class="col-sm-8 p-2">{{$article -> updated_at}}</dd>
+                    <dd class="col-sm-8 p-2">{{$article->updated_at}}</dd>
 
                     <dt class="col-sm-4 p-2">Content</dt>
                     <dd class="col-sm-8 p-2" id='textareaContent'>
-                        @php echo $article->content @endphp
+                        {!!  $article->content  !!}
                     </dd>
                     @if(Gate::check('article_owner', $article))
                     <div class="d-flex justify-content-end">

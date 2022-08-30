@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Support\Trait\HasSearchAll;
+use App\Support\Trait\HasSearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
 {
-    use HasFactory, HasSearchAll;
+    use HasFactory, HasSearch, SoftDeletes;
 
     protected $fillable = [
         'name',

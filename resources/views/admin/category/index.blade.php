@@ -16,13 +16,11 @@
                                 <div class="row">
                                     @if(Gate::check('can_do', ['create category']))
                                     <div class="col-sm-6 d-flex justify-content-start">
-                                        <a href="{{ route('category.create') }}" class="btn btn-primary col-2">Create</a>
+                                        <a href="{{ route('category.create') }}"
+                                            class="btn btn-primary col-2">Create</a>
                                     </div>
                                     @endif
-                                    <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search" placeholder="Search..." />
-                                        <button type="submit" class="btn btn-outline-primary">Search</button>
-                                    </form>
+                                    <x-forms.search value="{{ $search ?? '' }}" />
                                 </div>
                                 <br />
                                 @if (session()->has('message'))
@@ -46,19 +44,18 @@
                                         <tbody>
                                             @foreach($categories as $category)
                                             <tr>
-                                                <td>{{$category['id']}}</td>
-                                                <td>{{$category['name']}}</td>
-                                                <td>{{$category['slug']}}</td>
+                                                <td>{{$category->id}}</td>
+                                                <td>{{$category->name}}</td>
+                                                <td>{{$category->slug}}</td>
                                                 <td>
-                                                    <?php
-                                                    if ($category['status'] == 0)
-                                                        echo "disable";
-                                                    else
-                                                        echo "enable";
-                                                    ?>
+                                                    @if ($category->status == 0) 
+                                                        Disable
+                                                    @else 
+                                                        Enable 
+                                                    @endif
                                                 </td>
-                                                <td>{{$category['created_at']}}</td>
-                                                <td>{{$category['updated_at']}}</td>
+                                                <td>{{$category->created_at}}</td>
+                                                <td>{{$category->updated_at}}</td>
                                                 <td>
                                                     <form class="d-flex justify-content-end"
                                                         action="{{ route('category.destroy', $category->id) }}"

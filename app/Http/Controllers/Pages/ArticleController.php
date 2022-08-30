@@ -6,60 +6,61 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    public function index($slug)
+    protected $articleService;
+
+    public function __construct(ArticleService $articleService)
     {
-        $categories = $this->categoryList();
+        $this->articleService = $articleService;
+    }
+    public function getArticlesByCategory($slug)
+    {
         $category = Category::where('slug', $slug)->firstOrFail();
-        $articles = Article::where('category_id', $category->id)->latest()->get();
+        $articles = Article::where('category_id', $category->id)
+            ->where('status', Article::ENABLE_STATUS)
+            ->latest()
+            ->paginate(10);
         $tags = $category->tags()->where('status', Article::ENABLE_STATUS)->get();
 
-        return view('pages.article.index', compact(['articles', 'categories', 'tags', 'category']));
-    }
-
-    public function categoryList()
-    {
-        $categories = Category::where('status', Article::ENABLE_STATUS)->get();
-
-        return $categories;
+        return view('pages.article.index', compact(['articles', 'tags', 'category']));
     }
 
     public function show($slug)
     {
-        $categories = $this->categoryList();
         $article = Article::where('slug', $slug)->firstOrFail();
         $tags = $article->tags()->where('status', Article::ENABLE_STATUS)->get();
         $articles = Article::all();
         
-        return view('pages.article.show', compact(['article', 'tags', 'articles', 'categories']));
+        return view('pages.article.show', compact(['article', 'tags', 'articles']));
     }
 
-    public function articleForTag($slug)
+    public function getArticlesByTag($slug)
     {
-        $categories = $this->categoryList();
         $tag = Tag::where('slug', $slug)->firstOrFail();
-        $articles = $tag->articles()->get();
+        $articles = $tag->articles()->latest()->paginate(10);
 
-        return view('pages.article.index', compact(['articles', 'categories', 'tag']));
+        return view('pages.article.index', compact(['articles', 'tag']));
     }
     
-    public function search(Request $request)
+    public function searchArticles(Request $request)
     {
-        $categories = $this->categoryList();
-        $keyword = $request->search;
-        $articles = Article::where('title', 'like', "%{$keyword}%")->get();
+        $filter = [
+            ...$request->query(),
+            'paginate' => 10,
+        ];
+        $articles = $this->articleService->getList($filter);
 
-        return view('pages.article.index', compact(['articles', 'categories', 'keyword']));
+        return view('pages.article.index', compact(['articles']))->with('search', $filter['search'] ?? '');
     }
 
     public function tag()
     {
-        $categories = $this->categoryList();
         $tags = Tag::get();
 
-        return view('pages.article.tag', compact('tags', 'categories'));
+        return view('pages.article.tag', compact('tags'));
     }
 }

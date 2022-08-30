@@ -19,10 +19,7 @@
                                         <a href="{{ route('user.create')}}" class="btn btn-primary col-2">Create</a>
                                     </div>
                                     @endif
-                                    <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search" placeholder="Search..." />
-                                        <button type="submit" class="btn btn-outline-primary">Search</button>
-                                    </form>
+                                    <x-forms.search value="{{ $search ?? '' }}" />
                                 </div>
                                 <br />
                                 @if (session()->has('message'))
@@ -39,9 +36,9 @@
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Birthday</th>
                                                 <th scope="col">Phone</th>
+                                                <th scope="col">Address</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Created at</th>
-                                                <th scope="col">Updated at</th>
                                                 <th scope="col"></th>
                                             </tr>
                                         </thead>
@@ -54,11 +51,11 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->birthday }}</td>
                                                 <td>{{ $user->phone }}</td>
+                                                <td>{{ $user->address }}</td>
                                                 <td>
                                                     @if ($user->status == 0) Disable @else Enable @endif
                                                 </td>
                                                 <td>{{$user['created_at']}}</td>
-                                                <td>{{$user['updated_at']}}</td>
                                                 <td>
                                                     <form class="d-flex justify-content-end"
                                                         action="{{ route('user.destroy', $user->id) }}" method="POST">

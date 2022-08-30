@@ -18,10 +18,7 @@
                                     <div class="col-sm-6 d-flex justify-content-start">
                                         <a href="{{ route('tag.create')}}" class="btn btn-primary col-2">Create</a>
                                     </div>
-                                    <form class="col-sm-6 input-group d-flex justify-content-end">
-                                        <input type="search" name="search" placeholder="Search..." />
-                                        <button type="submit" class="btn btn-outline-primary">Search</button>
-                                    </form>
+                                    <x-forms.search value="{{ $search ?? '' }}" />
                                 </div>
                                 <br />
                                 @if (session()->has('message'))
@@ -45,14 +42,14 @@
                                         <tbody>
                                             @foreach($tags as $tag)
                                             <tr>
-                                                <td>{{$tag['id']}}</td>
-                                                <td>{{$tag['name']}}</td>
-                                                <td>{{$tag['slug']}}</td>
+                                                <td>{{$tag->id}}</td>
+                                                <td>{{$tag->name}}</td>
+                                                <td>{{$tag->slug}}</td>
                                                 <td>
-                                                    @if($tag['status'] == 0) Disable @else Enable @endif
+                                                    @if($tag->status == 0) Disable @else Enable @endif
                                                 </td>
-                                                <td>{{$tag['created_at']}}</td>
-                                                <td>{{$tag['updated_at']}}</td>
+                                                <td>{{$tag->created_at}}</td>
+                                                <td>{{$tag->updated_at}}</td>
                                                 <td>
                                                     <form class="d-flex justify-content-end" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
                                                         @method('DELETE')

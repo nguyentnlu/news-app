@@ -41,19 +41,27 @@ Route::group([
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::put('/profile/save', [UserController::class, 'profileSave'])->name('profile-save');
+    Route::put('/profile/changPassword', [UserController::class, 'changePassword'])->name('password-change');
+    Route::get('/article/status/{id}', [ArticleController::class, 'setStatus'])->name('article.status');
 });
 
-Route::get('/profile', [UserController::class, 'profile'])->middleware(['auth'])->name('profile');
-Route::put('/profile/save', [UserController::class, 'profileSave'])->middleware(['auth'])->name('profile-save');
-Route::put('/profile/changPassword', [UserController::class, 'changePassword'])->middleware(['auth'])->name('password-change');
-
-Route::get('/admin/article/status/{id}', [ArticleController::class, 'setStatus'])->middleware(['auth']);
 
 //Public pages
-Route::get('/home', [HomeController::class, 'index']);
-Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/article/{slug}', [PagesArticleController::class, 'show']);
-Route::get('/category/{slug}', [PagesArticleController::class, 'index']);
-Route::get('/tag/{slug}', [PagesArticleController::class, 'articleForTag']);
-Route::post('/search', [PagesArticleController::class, 'search']);
-Route::get('/tag', [PagesArticleController::class, 'tag']);
+Route::controller(HomeController::class)
+    ->name('public.')
+    ->group(function () {
+        Route::get('/home', 'index')->name('home');
+        Route::get('/contact', 'contact')->name('contact');
+    });
+
+Route::controller(PagesArticleController::class)
+    ->name('public.')
+    ->group(function () {
+        Route::get('/article/{slug}', 'show')->name('article.show');
+        Route::get('/category/{slug:slug}', 'getArticlesByCategory')->name('category.index');
+        Route::get('/tag/{slug}', 'getArticlesByTag')->name('tag.article');
+        Route::get('/search', 'searchArticles')->name('search');
+        Route::get('/tag', 'tag')->name('tag');
+    });
