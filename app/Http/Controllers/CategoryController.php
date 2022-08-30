@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Services\CategoryService;

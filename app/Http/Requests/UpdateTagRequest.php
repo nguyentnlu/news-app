@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class UpdateTagRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class UpdateTagRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'slug' => 'required',
+            'slug' => ['required', Rule::unique('tags')->ignore($this->route()->tag->id)],
             'status' => 'required',
         ];
     }

@@ -70,7 +70,8 @@ class ArticleService
                 $data['url'] = $fileName;
             }
 
-            $article->fill($data)->save();
+            $article->fill($data);
+                
             $article->tags()->sync(Arr::get($data, 'tag', []));
             DB::commit();
 

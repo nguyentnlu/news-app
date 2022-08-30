@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class UpdateArticleRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class UpdateArticleRequest extends FormRequest
         return [
             'title' => 'required',
             'content' => 'required',
-            'slug' => 'required',
+            'slug' => ['required', Rule::unique('articles')->ignore($this->route()->article->id)],
             'url' => ['nullable', 'file', 'max:512'],
             'category_id' => 'required',
             'tag' => 'nullable|array',

@@ -18,7 +18,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        Article::class => ArticlePolicy::class,
     ];
 
     /**
@@ -30,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function ($user, $ability) {
+        Gate::before(function ($user) {
             if ($user->is_admin) {
                 return true;
             }
@@ -47,7 +46,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasPermission($permissionName);
         });
 
-        Gate::define('article_owner', [ArticlePolicy::class, 'update']);
+        Gate::define('article_owner', function (User $user, Article $article)
+        {
+            return $user->id === $article->created_by;
+        });
 
     }
 }
