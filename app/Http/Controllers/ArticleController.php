@@ -116,7 +116,7 @@ class ArticleController extends Controller
         $article->status = !($article->status);
         $article->save();
 
-        $message = 'Successfully change "' . $article->title . '" status!';
+        $message = 'Successfully change "'.$article->title.'" status!';
 
         return redirect()->route('article.index')
             ->with('message', $message);

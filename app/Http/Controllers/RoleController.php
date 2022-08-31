@@ -40,7 +40,7 @@ class RoleController extends Controller
         $role->status = !($role->status);
         $role->save();
 
-        $message = 'Successfully change ' . $role->name . ' status!';
+        $message = 'Successfully change '.$role->name.' status!';
 
         return redirect()->route('role.index')
             ->with('message', $message);

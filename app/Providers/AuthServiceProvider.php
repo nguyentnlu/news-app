@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\Article;
 use App\Models\Permission;
 use App\Models\User;
-use App\Policies\ArticlePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -50,6 +49,5 @@ class AuthServiceProvider extends ServiceProvider
         {
             return $user->id === $article->created_by;
         });
-
     }
 }

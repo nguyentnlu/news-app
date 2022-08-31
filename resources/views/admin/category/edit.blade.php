@@ -15,19 +15,34 @@
                             @method('PUT')
                             @csrf
                             <div class="mb-3">
-                                <x-forms.input label="Category name" name="name" id="name" value="{{ $category->name }}"/>
+                                <x-forms.input 
+                                    label="Category name" 
+                                    name="name" 
+                                    id="name"
+                                    value="{{ $category->name }}" 
+                                    />
                             </div>
                             <div class="mb-3">
-                                <x-forms.input label="Category slug" name="slug" id="slug" value="{{ $category->slug }}"/>
+                                <x-forms.input 
+                                    label="Category slug" 
+                                    name="slug" 
+                                    id="slug"
+                                    value="{{ $category->slug }}" 
+                                    />
                             </div>
                             <div class="mb-3">
                                 <label for="tag" class="form-label">Tags</label><br>
-                                <x-forms.checkbox-list name="tag[]" id="tag" :items="$tags" :selected="$dataTags" />                    
+                                <x-forms.checkbox-list 
+                                    name="tag[]" 
+                                    id="tag" 
+                                    :items="$tags" 
+                                    :selected="$dataTags" 
+                                    />
                                 <a href="{{ route('tag.create')}}">+ Add tag</a>
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Category Status</label>
-                                <select value="{{$category->status}}" name="status" id="status" >
+                                <select value="{{$category->status}}" name="status" id="status">
                                     <option value="1" @if ($category->status == 1) selected @endif>Enable</option>
                                     <option value="0" @if ($category->status == 0) selected @endif>Disable</option>
                                 </select>

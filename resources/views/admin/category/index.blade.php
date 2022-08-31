@@ -48,10 +48,10 @@
                                                 <td>{{$category->name}}</td>
                                                 <td>{{$category->slug}}</td>
                                                 <td>
-                                                    @if ($category->status == 0) 
-                                                        Disable
-                                                    @else 
-                                                        Enable 
+                                                    @if ($category->status == 0)
+                                                    Disable
+                                                    @else
+                                                    Enable
                                                     @endif
                                                 </td>
                                                 <td>{{$category->created_at}}</td>
@@ -63,16 +63,24 @@
                                                         @method('DELETE')
                                                         @csrf
                                                         @if(Gate::check('can_do', ['edit category']))
-                                                        <a class="btn btn-success" style="display:inline"
-                                                            href="{{ route('category.edit', $category->id)}}">Edit</a> |
+                                                            <a class="btn btn-success" 
+                                                                style="display:inline"
+                                                                href="{{ route('category.edit', $category->id)}}"
+                                                                >
+                                                                Edit
+                                                            </a> |
                                                         @endif
                                                         @if(Gate::check('can_do', ['delete category']))
-                                                        <button id="delete" style="display:inline"
-                                                            onclick="return confirm('Are you sure you want to delete this category?')"
-                                                            class="btn btn-warning">Delete</button>
+                                                            <button 
+                                                                id="delete" 
+                                                                style="display:inline"
+                                                                onclick="return confirm('Are you sure you want to delete this category?')"
+                                                                class="btn btn-warning"
+                                                                >
+                                                                Delete
+                                                            </button>
                                                         @endif
                                                     </form>
-
                                                 </td>
                                             </tr>
                                             @endforeach

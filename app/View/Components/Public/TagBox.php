@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 class TagBox extends Component
 {
     public $items;
+    
     /**
      * Create a new component instance.
      *

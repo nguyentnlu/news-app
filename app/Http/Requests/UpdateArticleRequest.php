@@ -26,12 +26,15 @@ class UpdateArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'content' => 'required',
-            'slug' => ['required', Rule::unique('articles')->ignore($this->route()->article->id)],
+            'title' => ['required'],
+            'content' => ['required'],
+            'slug' => [
+                'required',
+                Rule::unique('articles')->ignore($this->route()->article->id),
+            ],
             'url' => ['nullable', 'file', 'max:512'],
-            'category_id' => 'required',
-            'tag' => 'nullable|array',
+            'category_id' => ['required'],
+            'tag' => ['nullable|array'],
         ];
     }
 }

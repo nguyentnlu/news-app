@@ -55,7 +55,5 @@
     <script src="{{ asset('frontend/js/jquery.waypoints.min.js') }}"></script>
     <!-- Main -->
     <script src="{{ asset('frontend/js/main.js') }}"></script>
-
 </body>
-
 </html>

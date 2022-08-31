@@ -26,10 +26,13 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'slug' => ['required', Rule::unique('categories')->ignore($this->route()->category->id)],
-            'status' => 'required',
-            'tag' => 'nullable|array',
+            'name' => ['required'],
+            'slug' => [
+                'required',
+                Rule::unique('categories')->ignore($this->route()->category->id),
+            ],
+            'status' => ['required'],
+            'tag' => ['nullable|array'],
         ];
     }
 }

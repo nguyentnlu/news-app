@@ -8,6 +8,7 @@ class Slide extends Component
 {
     public $key;
     public $items;
+    
     /**
      * Create a new component instance.
      *

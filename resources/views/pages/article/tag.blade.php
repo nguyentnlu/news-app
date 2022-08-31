@@ -10,7 +10,7 @@
                 <div class="clearfix"></div>
                 <div class="fh5co_tags_all">
                     @foreach ($tags as $tag)
-                    <a href="{{ route('public.tag.article', $tag->slug) }}" class="fh5co_tagg">{{ $tag->name }}</a>
+                        <a href="{{ route('public.tag.article', $tag->slug) }}" class="fh5co_tagg">{{ $tag->name }}</a>
                     @endforeach
                 </div>
             </div>

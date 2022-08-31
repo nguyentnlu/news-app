@@ -12,6 +12,7 @@ class Input extends Component
     public $value;
     public $id;
     public $type;
+    
     /**
      * Create a new component instance.
      *
@@ -42,5 +43,4 @@ class Input extends Component
     {
         return view('components.forms.input');
     }
-    
 }

@@ -16,29 +16,29 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if(Gate::check('can_do', ['read category']))
-                    <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
-                        {{ __('Category') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
+                            {{ __('Category') }}
+                        </x-nav-link>
                     @endif
                     @if(Gate::check('can_do', ['read tag']))
-                    <x-nav-link :href="route('tag.index')" :active="request()->routeIs('tag.index')">
-                        {{ __('Tag') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('tag.index')" :active="request()->routeIs('tag.index')">
+                            {{ __('Tag') }}
+                        </x-nav-link>
                     @endif
                     @if(Gate::check('can_do', ['read article']))
-                    <x-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
-                        {{ __('Article') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
+                            {{ __('Article') }}
+                        </x-nav-link>
                     @endif
                     @if(Gate::check('can_do', ['read role']))
-                    <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
-                        {{ __('Role') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                            {{ __('Role') }}
+                        </x-nav-link>
                     @endif
                     @if(Gate::check('can_do', ['read user']))
-                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                        {{ __('User') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                            {{ __('User') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -93,29 +93,29 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @if(Gate::check('can_do', ['read category']))
-            <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
-                {{ __('Category') }}
-            </x-nav-link>
+                <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
+                    {{ __('Category') }}
+                </x-nav-link>
             @endif
             @if(Gate::check('can_do', ['read tag']))
-            <x-nav-link :href="route('tag.index')" :active="request()->routeIs('tag.index')">
-                {{ __('Tag') }}
-            </x-nav-link>
+                <x-nav-link :href="route('tag.index')" :active="request()->routeIs('tag.index')">
+                    {{ __('Tag') }}
+                </x-nav-link>
             @endif
             @if(Gate::check('can_do', ['read article']))
-            <x-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
-                {{ __('Article') }}
-            </x-nav-link>
+                <x-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
+                    {{ __('Article') }}
+                </x-nav-link>
             @endif
             @if(Gate::check('can_do', ['read role']))
-            <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
-                {{ __('Role') }}
-            </x-nav-link>
+                <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                    {{ __('Role') }}
+                </x-nav-link>
             @endif
             @if(Gate::check('can_do', ['read user']))
-            <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                {{ __('User') }}
-            </x-nav-link>
+                <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                    {{ __('User') }}
+                </x-nav-link>
             @endif
         </div>
 

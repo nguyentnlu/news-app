@@ -25,9 +25,9 @@ class StoreTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'slug' => 'required|unique:tags',
-            'status' => 'nullable',
+            'name' => ['required'],
+            'slug' => ['required|unique:tags'],
+            'status' => ['nullable'],
         ];
     }
 }

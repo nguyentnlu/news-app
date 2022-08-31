@@ -63,7 +63,6 @@
                         console.error(error);
                     });
 
-
                 $('input[name="url"]').on('change', function() {
                     $('#img-preview').attr('src', '');
                     const file = this.files[0];

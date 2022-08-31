@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CategorySeeder extends Seeder
 {
@@ -19,25 +17,25 @@ class CategorySeeder extends Seeder
         Category::insert([
             [
                 'name' => 'Sports',
-                'slug' => 'Sports',
+                'slug' => 'sports-category',
                 'status' => 1,
                 'created_at' => date('Y/m/d'),
             ],
             [
                 'name' => 'Health',
-                'slug' => 'Health',
+                'slug' => 'health-category',
                 'status' => 1,
                 'created_at' => date('Y/m/d'),
             ],
             [
                 'name' => 'Technology',
-                'slug' => 'Technology',
+                'slug' => 'technology-category',
                 'status' => 1,
                 'created_at' => date('Y/m/d'),
             ],
             [
                 'name' => 'Science',
-                'slug' => 'Science',
+                'slug' => 'science-category',
                 'status' => 1,
                 'created_at' => date('Y/m/d'),
             ]

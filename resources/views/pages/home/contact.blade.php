@@ -14,7 +14,7 @@
             <div class="col-md-4 py-3">
                 <div class="row fh5co_contact_us_no_icon_difh5co_hover">
                     <div class="col-3 fh5co_contact_us_no_icon_difh5co_hover_1">
-                        <div class="fh5co_contact_us_no_icon_div"> <span><i class="fa fa-phone"></i></span> </div>
+                        <div class="fh5co_contact_us_no_icon_div"> <span><i class="fa fa-phone"></i></span></div>
                     </div>
                     <div class="col-9 align-self-center fh5co_contact_us_no_icon_difh5co_hover_2">
                         <span class="c_g d-block">Call Us</span>
@@ -26,7 +26,7 @@
             <div class="col-md-4 py-3">
                 <div class="row fh5co_contact_us_no_icon_difh5co_hover">
                     <div class="col-3 fh5co_contact_us_no_icon_difh5co_hover_1">
-                        <div class="fh5co_contact_us_no_icon_div"> <span><i class="fa fa-envelope"></i></span> </div>
+                        <div class="fh5co_contact_us_no_icon_div"> <span><i class="fa fa-envelope"></i></span></div>
                     </div>
                     <div class="col-9 align-self-center fh5co_contact_us_no_icon_difh5co_hover_2">
                         <span class="c_g d-block">Have any questions?</span>
@@ -38,7 +38,7 @@
             <div class="col-md-4 py-3">
                 <div class="row fh5co_contact_us_no_icon_difh5co_hover">
                     <div class="col-3 fh5co_contact_us_no_icon_difh5co_hover_1">
-                        <div class="fh5co_contact_us_no_icon_div"> <span><i class="fa fa-map-marker"></i></span> </div>
+                        <div class="fh5co_contact_us_no_icon_div"> <span><i class="fa fa-map-marker"></i></span></div>
                     </div>
                     <div class="col-9 align-self-center fh5co_contact_us_no_icon_difh5co_hover_2">
                         <span class="c_g d-block">Address</span>
@@ -60,18 +60,18 @@
             <div class="col-12 col-md-6">
                 <form class="row" id="fh5co_contact_form">
                     <div class="col-12 py-3">
-                        <input type="text" class="form-control fh5co_contact_text_box" placeholder="Enter Your Name" />
+                        <input type="text" class="form-control fh5co_contact_text_box" placeholder="Enter Your Name"/>
                     </div>
                     <div class="col-6 py-3">
-                        <input type="text" class="form-control fh5co_contact_text_box" placeholder="E-mail" />
+                        <input type="text" class="form-control fh5co_contact_text_box" placeholder="E-mail"/>
                     </div>
                     <div class="col-6 py-3">
-                        <input type="text" class="form-control fh5co_contact_text_box" placeholder="Subject" />
+                        <input type="text" class="form-control fh5co_contact_text_box" placeholder="Subject"/>
                     </div>
                     <div class="col-12 py-3">
                         <textarea class="form-control fh5co_contacts_message" placeholder="Message"></textarea>
                     </div>
-                    <div class="col-12 py-3 text-center"> <a href="#" class="btn contact_btn">Send Message</a> </div>
+                    <div class="col-12 py-3 text-center"> <a href="#" class="btn contact_btn">Send Message</a></div>
                 </form>
             </div>
             <div class="col-12 col-md-6 align-self-center">

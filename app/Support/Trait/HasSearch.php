@@ -18,7 +18,6 @@ trait HasSearch
                 }
             });
         }
-
         return $query;
     }
 }

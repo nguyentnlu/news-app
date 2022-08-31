@@ -2,18 +2,22 @@
 @section('content')
 <div id="fh5co-single-content" class="container-fluid pb-4 pt-4 paddding">
     <div class="container paddding">
-        <h5><i class="fa fa-list-alt" aria-hidden="true"></i><b>{{ $article->category->name }}</b></h5><br/>
-        <h1>{{ $article->title }}</h1><br />
+        <h5>
+            <i class="fa fa-list-alt" aria-hidden="true"></i><b>{{ $article->category->name }}</b>
+        </h5>
+        <br/>
+        <h1>{{ $article->title }}</h1>
+        <br/>
         <p><i>{{ $article->author->name }}</i></p>
         <p><i>{{ $article->created_at }}</i></p>
         <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" width="1020px">
-        <br /><br />
+        <br/><br />
         <div class="row mx-0">
             <div class="col-md-8 animate-box content-detail" data-animate-effect="fadeInLeft">
                 <br />
                 {!!  $article->content  !!} 
             </div>
-            <x-public.tag-box :items="$tags" />
+            <x-public.tag-box :items="$tags"/>
         </div>
     </div>
 </div>
@@ -38,7 +42,6 @@
                 </div>
             </div>
             @endforeach
-            
         </div>
     </div>
 </div>
