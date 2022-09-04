@@ -4,7 +4,7 @@
     </div>
     <div class="owl-carousel owl-theme js slider">
         @foreach ($items as $article)
-            <div class="item px-2">
+            <div class="item px-2 mb-3">
                 <div class="fh5co_latest_trading_img_position_relative">
                     <div class="fh5co_latest_trading_img">
                         <img src="{{ asset('storage/'.$article->url) }}"

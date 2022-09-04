@@ -31,6 +31,28 @@
                                         />
                                 </div>
                                 <div class="mb-3">
+                                    <x-forms.input 
+                                        label="Birthday" 
+                                        name="birthday" 
+                                        id="birthday" 
+                                        type="date"
+                                        />
+                                </div>
+                                <div class="mb-3">
+                                    <x-forms.input 
+                                        label="Phone" 
+                                        name="phone" 
+                                        id="phone" 
+                                        />
+                                </div>
+                                <div class="mb-3">
+                                    <x-forms.input 
+                                        label="Address" 
+                                        name="address" 
+                                        id="address" 
+                                        />
+                                </div>
+                                <div class="mb-3">
                                     <label class="form-label">Role</label><br>
                                     <x-forms.checkbox-list 
                                         name="role[]" 

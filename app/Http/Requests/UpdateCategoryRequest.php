@@ -32,7 +32,7 @@ class UpdateCategoryRequest extends FormRequest
                 Rule::unique('categories')->ignore($this->route()->category->id),
             ],
             'status' => ['required'],
-            'tag' => ['nullable|array'],
+            'tag' => 'nullable|array',
         ];
     }
 }

@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Article::latest()->with('category')->get()->groupBy('category.name');
+        $categories = Article::where('status', true)->latest()->with('category')->get()->groupBy('category.name');
 
         return view('pages.home.index', compact(['categories']));
     }

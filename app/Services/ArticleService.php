@@ -54,6 +54,21 @@ class ArticleService
             return null;
         }
     }
+    
+    /**
+     * @param   \Illuminate\Http\UploadedFile  $file
+     */
+    public function handleFileUpload(?UploadedFile $file)
+    {
+        if (is_null($file)) {
+            return null;
+        }
+
+        $fileName = date('Ymd_His') . "_" . $file->getClientOriginalName();
+        $file->storeAs('public', $fileName);
+
+        return $fileName;
+    }
 
     public function update($data, $article)
     {
@@ -70,7 +85,7 @@ class ArticleService
                 $data['url'] = $fileName;
             }
 
-            $article->fill($data);
+            $article->fill($data)->save();
                 
             $article->tags()->sync(Arr::get($data, 'tag', []));
             DB::commit();
@@ -84,24 +99,18 @@ class ArticleService
         }
     }
 
-    /**
-     * @param   \Illuminate\Http\UploadedFile  $file
-     */
-    public function handleFileUpload(?UploadedFile $file)
-    {
-        if (is_null($file)) {
-            return null;
-        }
-
-        $fileName = date('Ymd_His') . "_" . $file->getClientOriginalName();
-        $file->storeAs('public', $fileName);
-
-        return $fileName;
-    }
-
     public function delete(Article $article)
     {
         $article->tags()->detach();
         $article->delete();
+    }
+
+    public function setStatus($id)
+    {
+        $article = Article::find($id);
+        $article->status = !($article->status);
+        $article->save();
+
+        return 'Successfully change "'.$article->title.'" status!';
     }
 }

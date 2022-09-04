@@ -14,7 +14,9 @@
                         <div class="row">
                             <div class="col-sm-6 d-flex justify-content-start">
                                 @if(Gate::check('can_do', ['create article']))
-                                <a href="{{ route('article.create')}}" class="btn btn-primary col-2">Create</a>
+                                    <a href="{{ route('article.create')}}" class="btn btn-primary col-2">
+                                        Create
+                                    </a>
                                 @endif
                             </div>
                             <x-forms.search value="{{ $search ?? '' }}" />
@@ -34,9 +36,7 @@
                                         <th scope="col">Title</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Category</th>
-                                        <th scope="col">Created by</th>
-                                        <th scope="col">Created at</th>
-                                        <th scope="col">Updated at</th>
+                                        <th scope="col">Author</th>
                                         @if(Gate::check('can_do', ['enable article']))
                                         <th scope="col">Status</th>
                                         @endif
@@ -46,37 +46,55 @@
                                 <tbody>
                                     @foreach($articles as $article)
                                     <tr>
-                                        <td>{{$article->id}}</td>
-                                        <td>{{$article->title}}</td>
+                                        <td>{{ $loop->index }}</td>
+                                        <td>{{ $article->title }}</td>
                                         <td>
                                             <img width="180px" src="{{ asset('storage/'.$article->url) }}" />
                                         </td>
-                                        <td>{{$article->category_name}}</td>
-                                        <td>{{$article->author_name}}</td>
-                                        <td>{{$article->created_at}}</td>
-                                        <td>{{$article->updated_at}}</td>
+                                        <td>{{ $article->category_name }}</td>
+                                        <td>{{ $article->author_name }}</td>
                                         @if(Gate::check('can_do', ['enable article']))
                                         <td>
                                             @if ($article->status)
-                                            <a class="btn btn-link"
-                                                href="{{ route('article.status', $article->id) }}">Enable</a>
+                                                <a class="btn btn-link"
+                                                    href="{{ route('article.status', $article->id) }}"
+                                                    >
+                                                    <i class="fa fa-toggle-on fa-lg" aria-hidden="true"></i>
+                                                </a>
                                             @else
-                                            <a class="btn btn-light"
-                                                href="{{ route('article.status', $article->id) }}">Disable</a>
+                                                <a class="btn btn-light"
+                                                    href="{{ route('article.status', $article->id) }}"
+                                                    >
+                                                    <i class="fa fa-toggle-off fa-lg" aria-hidden="true"></i>
+                                                </a>
                                             @endif
                                         </td>
                                         @endif
                                         <td>
                                             <form class="d-flex justify-content-end"
-                                                action="{{ route('article.destroy', $article->id) }}" method="POST">
+                                                action="{{ route('article.destroy', $article->id) }}" 
+                                                method="POST"
+                                                >
                                                 @method('DELETE')
                                                 @csrf
                                                 <a class="btn btn-info" style="display:inline"
-                                                    href="{{ route('article.show', $article->id)}}">Show</a>
+                                                    href="{{ route('article.show', $article->id)}}"
+                                                    >
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                </a>|
+                                                <a class="btn btn-warning" 
+                                                    style="display:inline" 
+                                                    href="{{ route('article.edit', $article->id)}}"
+                                                    >
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>|
                                                 @if(Gate::check('can_do', ['delete article']))
-                                                |<button style="display:inline"
-                                                    onclick="return confirm('Are you sure you want to delete this article?')"
-                                                    class="btn btn-warning delete">Delete</button>
+                                                    <button style="display:inline"
+                                                        onclick="return confirm('Are you sure you want to delete this article?')"
+                                                        class="btn btn-danger delete"
+                                                        >
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    </button>
                                                 @endif
                                             </form>
 

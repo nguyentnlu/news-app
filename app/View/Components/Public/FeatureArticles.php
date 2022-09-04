@@ -19,7 +19,7 @@ class FeatureArticles extends Component
 
     public function getArticle()
     {
-        return Article::latest()->limit(5)->get();
+        return Article::where('status', Article::ENABLE_STATUS)->latest()->limit(5)->get();
     }
 
     /**

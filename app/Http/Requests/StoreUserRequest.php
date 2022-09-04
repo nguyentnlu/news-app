@@ -30,9 +30,9 @@ class StoreUserRequest extends FormRequest
             'password' => ['required', 'confirmed'],
             'status' => ['required'],
             'role' => ['required', 'array'],
-            'birthday' => ['required'],
-            'phone' => ['required'],
-            'address' => ['required'],
+            'birthday' => ['nullable'],
+            'phone' => ['nullable'],
+            'address' => ['nullable'],
         ];
     }
 }

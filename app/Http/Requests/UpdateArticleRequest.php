@@ -34,7 +34,7 @@ class UpdateArticleRequest extends FormRequest
             ],
             'url' => ['nullable', 'file', 'max:512'],
             'category_id' => ['required'],
-            'tag' => ['nullable|array'],
+            'tag' => 'nullable|array',
         ];
     }
 }

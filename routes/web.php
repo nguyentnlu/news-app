@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Pages\ArticleController as PagesArticleController;
 use App\Http\Controllers\Pages\HomeController;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,10 +41,12 @@ Route::group([
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-    Route::put('/profile/save', [UserController::class, 'profileSave'])->name('profile-save');
-    Route::put('/profile/changPassword', [UserController::class, 'changePassword'])->name('password-change');
     Route::get('/article/status/{id}', [ArticleController::class, 'setStatus'])->name('article.status');
+
+    Route::put('/profile/save', [UserController::class, 'profileSave'])->name('profile-save');
+    Route::put('/profile/changePassword', [UserController::class, 'changePassword'])->name('password-change');
 });
 
 

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
@@ -9,8 +10,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserService;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -21,9 +20,11 @@ class UserController extends Controller
         $this->userService = $userService;
         date_default_timezone_set('asia/ho_chi_minh');
     }
+
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -44,6 +45,7 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('can_do', ['create user']);
+
         $roles = Role::all();
 
         return view('admin.user.create', compact(['roles']));
@@ -52,12 +54,13 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreUserRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserRequest $request)
     {
         $user = $this->userService->create($request->validated());
+
         if (is_null($user)) {
             return back()->with('error', 'Failed create!');
         }
@@ -66,16 +69,16 @@ class UserController extends Controller
             ->with('message', 'Successfully created!');
     }
 
-    public function show($id)
-    {
-    }
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show($id)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -86,9 +89,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $this->authorize('can_do', ['edit user']);
+
         $user = User::find($id);
         $dataRoles = $user->roles->pluck('id')->toArray();
-
         $roles = Role::all();
 
         return view('admin.user.edit', compact(['user', 'roles', 'dataRoles']));
@@ -97,8 +100,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateUserRequest $request
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserRequest $request, User $user)
@@ -112,12 +115,13 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {
         $this->authorize('can_do', ['delete user']);
+
         $this->userService->delete($user);
 
         return redirect()->route('user.index')
@@ -128,14 +132,15 @@ class UserController extends Controller
     {
         $user = User::find(auth()->id());
         $dataRoles = $user->roles()->get();
-
         $roles = Role::all();
+
         return view('admin.user.profile', compact(['user', 'roles', 'dataRoles']));
     }
 
     public function profileSave(Request $request)
     {
         $user = User::find(auth()->id());
+
         $data = $request->validate([
             'name' => 'required',
             'birthday' => 'required',
@@ -158,6 +163,7 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         $user = User::find(auth()->id());
+        
         $request->validate([
             'current_password' => 'required',
             'new_password' => ['required', 'confirmed'],

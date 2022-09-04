@@ -45,7 +45,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasPermission($permissionName);
         });
 
-        Gate::define('article_owner', function (User $user, Article $article)
+        Gate::define('article_owner', function (User $user, $article)
         {
             return $user->id === $article->created_by;
         });

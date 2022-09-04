@@ -57,19 +57,24 @@
                                                             @method('DELETE')
                                                             @csrf
                                                             @if(Gate::check('can_do', ['edit tag']))
-                                                                <a class="btn btn-success" 
+                                                                <a class="btn btn-warning" 
                                                                     style="display:inline" 
                                                                     href="{{ route('tag.edit', $tag->id)}}"
                                                                     >
-                                                                    Edit
+                                                                    <i class="fa fa-pencil-square-o" 
+                                                                        aria-hidden="true"
+                                                                        >
+                                                                    </i>
                                                                 </a>|
                                                             @endif
                                                             @if(Gate::check('can_do', ['delete tag']))
                                                                 <button style="display:inline" 
                                                                     onclick="return confirm('Are you sure you want to delete this tag?')" 
-                                                                    class="btn btn-warning"
+                                                                    class="btn btn-danger"
                                                                     >
-                                                                    Delete
+                                                                    <i class="fa fa-trash-o" 
+                                                                        aria-hidden="true">
+                                                                    </i>
                                                                 </button>
                                                             @endif
                                                         </form>

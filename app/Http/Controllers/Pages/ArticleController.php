@@ -41,7 +41,7 @@ class ArticleController extends Controller
     public function getArticlesByTag($slug)
     {
         $tag = Tag::where('slug', $slug)->firstOrFail();
-        $articles = $tag->articles()->latest()->paginate(10);
+        $articles = $tag->articles()->where('status', Article::ENABLE_STATUS)->latest()->paginate(10);
 
         return view('pages.article.index', compact(['articles', 'tag']));
     }
