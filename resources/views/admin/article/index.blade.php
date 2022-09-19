@@ -46,7 +46,8 @@
                                 <tbody>
                                     @foreach($articles as $article)
                                     <tr>
-                                        <td>{{ $loop->index }}</td>
+                                        {{-- <td>{{ $loop->iteration }}</td> --}}
+                                        <td>{{ $article->id }}</td>
                                         <td>{{ $article->title }}</td>
                                         <td>
                                             <img width="180px" src="{{ asset('storage/'.$article->url) }}" />
