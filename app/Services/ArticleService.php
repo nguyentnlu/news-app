@@ -35,6 +35,7 @@ class ArticleService
     {
         DB::beginTransaction();
         try {
+            dd(Arr::get($data, 'url'));
             $fileName = $this->handleFileUpload(Arr::get($data, 'url'));
             $data['url'] = $fileName;
 

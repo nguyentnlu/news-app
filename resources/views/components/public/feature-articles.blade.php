@@ -1,6 +1,6 @@
-<div class="container-fluid paddding mb-5">
+<div class="container-fluid paddding">
     <div class="row mx-0">
-        <div class="col-md-6 col-12 paddding animate-box" data-animate-effect="fadeIn">
+        <div class="col-md-6 col-12 paddding animate-box" style="padding: 2px!important" data-animate-effect="fadeIn">
             <div class="fh5co_suceefh5co_height"><img src="{{ asset('storage/'.$getArticle()[0]->url) }}"
                     alt="{{ $getArticle()[0]->url }}" />
                 <div class="fh5co_suceefh5co_height_position_absolute"></div>
@@ -24,7 +24,7 @@
             <div class="row">
                 @foreach ($getArticle() as $key=>$article )
                     @if($key != 0)
-                        <div class="col-md-6 col-6 paddding animate-box" data-animate-effect="fadeIn">
+                        <div class="col-md-6 col-6 animate-box" style="padding: 2px!important" data-animate-effect="fadeIn">
                             <div class="fh5co_suceefh5co_height_2">
                                 <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" />
                                 <div class="fh5co_suceefh5co_height_position_absolute"></div>
