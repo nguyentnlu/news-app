@@ -32,7 +32,7 @@ class UpdateArticleRequest extends FormRequest
                 'required',
                 Rule::unique('articles')->ignore($this->route()->article->id),
             ],
-            'url' => ['nullable', 'file', 'max:512'],
+            'url' => ['nullable', 'file', 'max:2048'],
             'category_id' => ['required'],
             'tag' => 'nullable|array',
         ];

@@ -28,7 +28,7 @@ class StoreArticleRequest extends FormRequest
             'title' => 'required|unique:articles|max:255',
             'content' => ['required'],
             'slug' => 'required|unique:articles',
-            'url' => ['required', 'file', 'max:512'],
+            'url' => ['required', 'file', 'max:2048'],
             'category_id' => ['required'],
             'tag' => 'nullable|array',
         ];
