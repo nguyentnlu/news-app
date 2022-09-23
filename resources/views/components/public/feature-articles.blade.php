@@ -1,7 +1,7 @@
 <div class="container-fluid paddding">
     <div class="row mx-0">
         <div class="col-md-6 col-12 paddding animate-box" style="padding: 2px!important" data-animate-effect="fadeIn">
-            <div class="fh5co_suceefh5co_height"><img src="{{ Storage::disk('s3')->url($getArticle()[0]->url)) }}"
+            <div class="fh5co_suceefh5co_height"><img src="{{ Storage::disk('s3')->url($getArticle()[0]->url) }}"
                     alt="{{ $getArticle()[0]->url }}" />
                 <div class="fh5co_suceefh5co_height_position_absolute"></div>
                 <div class="fh5co_suceefh5co_height_position_absolute_font">
