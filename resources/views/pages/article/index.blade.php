@@ -14,7 +14,7 @@
                         <div class="col-md-5">
                             <div class="fh5co_hover_news_img">
                                 <div class="fh5co_news_img">
-                                    <img src="{{ asset('storage/'.$article->url) }}"
+                                    <img src="{{ Storage::disk('s3')->url($article->url) }}"
                                         alt="{{ $article->url }}" />
                                 </div>
                             </div>

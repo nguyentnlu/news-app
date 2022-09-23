@@ -7,7 +7,7 @@
             <div class="item px-2 mb-3">
                 <div class="fh5co_latest_trading_img_position_relative">
                     <div class="fh5co_latest_trading_img">
-                        <img src="{{ asset('storage/'.$article->url) }}"
+                        <img src="{{ Storage::disk('s3')->url($article->url) }}"
                             alt="{{ $article->url }}" class="fh5co_img_special_relative"/>
                     </div>
                     <div class="fh5co_latest_trading_img_position_absolute"></div>

@@ -28,7 +28,7 @@
 
                                         <dt class="col-sm-3 p-3 text-right">Image:</dt>
                                         <dd class="col-sm-9 p-3">
-                                            <img src="{{ asset('storage/'.$article->url) }}" width="400px"/>
+                                            <img src="{{ Storage::disk('s3')->url($article->url) }}" width="400px"/>
                                         </dd>
 
                                         <dt class="col-sm-3 text-truncate p-3 text-right">Category:</dt>

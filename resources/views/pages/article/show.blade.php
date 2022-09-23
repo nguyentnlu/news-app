@@ -10,7 +10,7 @@
         <br/>
         <p><i>{{ $article->author->name }}</i></p>
         <p><i>{{ $article->created_at }}</i></p>
-        <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" width="1020px">
+        <img src="{{ Storage::disk('s3')->url($article->url) }}" alt="{{ $article->url }}" width="1020px">
         <br/><br />
         <div class="row mx-0">
             <div class="col-md-8 animate-box content-detail" data-animate-effect="fadeInLeft">
@@ -31,7 +31,7 @@
             <div class="item px-2">
                 <div class="fh5co_hover_news_img">
                     <div class="fh5co_news_img">
-                        <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}"/>
+                        <img src="{{ Storage::disk('s3')->url($article->url) }}" alt="{{ $article->url }}"/>
                     </div>
                     <div>
                         <a href="#" class="d-block fh5co_small_post_heading">

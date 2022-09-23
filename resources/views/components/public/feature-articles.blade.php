@@ -26,7 +26,7 @@
                     @if($key != 0)
                         <div class="col-md-6 col-6 animate-box" style="padding: 2px!important" data-animate-effect="fadeIn">
                             <div class="fh5co_suceefh5co_height_2">
-                                <img src="{{ asset('storage/'.$article->url) }}" alt="{{ $article->url }}" />
+                                <img src="{{ Storage::disk('s3')->url($article->url) }}" alt="{{ $article->url }}" />
                                 <div class="fh5co_suceefh5co_height_position_absolute"></div>
                                 <div class="fh5co_suceefh5co_height_position_absolute_font_2">
                                     <div>
