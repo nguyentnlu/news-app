@@ -26,7 +26,7 @@
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Image</label>
                                     <img id="img-preview" width="300px"
-                                        src="{{ asset('storage/' . $article->url) }}" />
+                                        src="{{ Storage::disk('s3')->url($article->url) }}" />
                                 </div>
                                 <div class="mb-3">
                                     <x-forms.input label="Change image" type="file" name="url" id="url"

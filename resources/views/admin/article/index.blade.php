@@ -50,7 +50,7 @@
                                         <td>{{ $article->id }}</td>
                                         <td>{{ $article->title }}</td>
                                         <td>
-                                            <img width="180px" src="{{ asset('storage/'.$article->url) }}" />
+                                            <img width="180px" src="{{ Storage::disk('s3')->url($article->url) }}" />
                                         </td>
                                         <td>{{ $article->category_name }}</td>
                                         <td>{{ $article->author_name }}</td>

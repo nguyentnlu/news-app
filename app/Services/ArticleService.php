@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleService
 {
@@ -35,7 +36,6 @@ class ArticleService
     {
         DB::beginTransaction();
         try {
-            dd(Arr::get($data, 'url'));
             $fileName = $this->handleFileUpload(Arr::get($data, 'url'));
             $data['url'] = $fileName;
 
@@ -65,30 +65,26 @@ class ArticleService
             return null;
         }
 
-        $fileName = date('Ymd_His') . "_" . $file->getClientOriginalName();
-        $file->storeAs('public', $fileName);
+        $path = Storage::disk('s3')->put('images-article', $file, 'public');
 
-        return $fileName;
+        return $path;
     }
 
     public function update($data, $article)
     {
         DB::beginTransaction();
         try{
-            $fileName = $this->handleFileUpload(Arr::get($data, 'url'));
-            if (empty($fileName)) {
+            if (!isset($data['url'])) {
                 $data['url'] = $article->url;
             } else {
-                $filePath = public_path('storage/' . $article->url);
-                if (File::exists($filePath)) {
-                    unlink($filePath);
-                }
-                $data['url'] = $fileName;
+                Storage::disk('s3')->delete($article->url);
+                $data['url'] = $this->handleFileUpload(Arr::get($data, 'url'));
             }
 
             $article->fill($data)->save();
                 
             $article->tags()->sync(Arr::get($data, 'tag', []));
+            
             DB::commit();
 
             return $article;
